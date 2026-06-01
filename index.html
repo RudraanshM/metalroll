@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Metal Roll</title>
+
+<style>
+
+body{
+background:#111;
+color:white;
+font-family:Arial;
+text-align:center;
+}
+
+button{
+padding:8px 14px;
+margin:4px;
+border:none;
+cursor:pointer;
+border-radius:6px;
+}
+
+#rollBtn{
+background:gold;
+color:black;
+font-weight:bold;
+}
+
+.metalCard{
+border:1px solid #444;
+margin:6px;
+padding:6px;
+border-radius:6px;
+background:#1a1a1a;
+}
+
+.inventory,.field{
+max-height:250px;
+overflow:auto;
+border:1px solid #333;
+padding:6px;
+margin:10px;
+}
+
+.statBox{
+font-size:18px;
+margin:10px;
+}
+
+/* rarity colors */
+
+.common{color:#bfbfbf;}
+.uncommon{color:#63ff8a;}
+.rare{color:#4da6ff;}
+.epic{color:#c46bff;}
+.legendary{color:#ffd84d;}
+.mythic{color:#800080;}
+.divine{color:orange;}
+
+.admin{
+background:linear-gradient(90deg,red,orange,yellow,green,blue,indigo,violet);
+-webkit-background-clip:text;
+color:transparent;
+font-weight:bold;
+}
+
+.shop{
+border:1px solid #333;
+padding:10px;
+margin:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Metal Roll</h1>
+
+<div class="statBox">
+Money: $<span id="money">0</span> |
+Income/sec: $<span id="income">0</span>
+</div>
+
+<button id="rollBtn">Roll Metal</button>
+
+<div id="result"></div>
+
+<div style="margin:10px">
+<input id="codeInput" placeholder="enter code">
+<button onclick="redeemCode()">Redeem</button>
+</div>
+
+<h2>Dice Shop</h2>
+
+<div class="shop">
+
+<button onclick="buyDice('common',5000)">Common Dice ($5,000)</button>
+<button onclick="buyDice('uncommon',25000)">Uncommon Dice ($25,000)</button>
+<button onclick="buyDice('rare',100000)">Rare Dice ($100,000)</button>
+<button onclick="buyDice('epic',750000)">Epic Dice ($750,000)</button>
+<button onclick="buyDice('legendary',5000000)">Legendary Dice ($5,000,000)</button>
+<button onclick="buyDice('mythic',50000000)">Mythic Dice ($50,000,000)</button>
+<button onclick="buyDice('divine',1000000000)">Divine Dice ($1,000,000,000)</button>
+
+<p>Dice Inventory</p>
+<div id="diceInventory"></div>
+
+</div>
+
+<h2>Inventory (0/100)</h2>
+<div class="inventory" id="inventory"></div>
+
+<h2>Field (0/10)</h2>
+<div class="field" id="field"></div>
+
+<script>
+
+let money = 0
+let inventory = []
+let field = []
+let incomePerSecond = 0
+
+let diceInventory={
+common:0,
+uncommon:0,
+rare:0,
+epic:0,
+legendary:0,
+mythic:0,
+divine:0
+}
+
+let activeDice=null
+
+const metals=[
+
+{name:"iron",value:0.10,rarity:40},
+{name:"Copper",value:0.80,rarity:30},
+{name:"Gold",value:60,rarity:3},
+{name:"Platinum",value:35,rarity:2},
+{name:"Rhodium",value:150,rarity:1},
+
+{name:"Adamantium",value:500,rarity:0.1},
+{name:"Vibranium",value:600,rarity:0.05},
+
+{name:"Celestium",value:1500,rarity:0.01},
+{name:"Quantumium",value:3000,rarity:0.005},
+
+{name:"Omnidium",value:100000,rarity:0.0001},
+
+/* divine metals */
+
+{name:"Godsteel",value:500000,rarity:0.00001},
+{name:"Divinium",value:1000000,rarity:0.000005},
+{name:"Aetherion",value:2500000,rarity:0.000002},
+
+/* admin */
+
+{name:"Philosopher's Stone",value:1e15,rarity:0}
+
+]
+
+function getRarityTier(m){
+
+if(m.name==="Philosopher's Stone")return"admin"
+
+if(m.rarity>=20)return"common"
+if(m.rarity>=5)return"uncommon"
+if(m.rarity>=1)return"rare"
+if(m.rarity>=0.1)return"epic"
+if(m.rarity>=0.01)return"legendary"
+if(m.rarity>=0.00001)return"mythic"
+
+return"divine"
+}
+
+function weightedRoll(){
+
+let total=metals.reduce((sum,m)=>sum+m.rarity,0)
+
+let rand=Math.random()*total
+
+let running=0
+
+for(let m of metals){
+
+running+=m.rarity
+
+if(rand<=running)return m
+
+}
+
+}
+
+function buyDice(type,cost){
+
+if(money<cost)return
+
+money-=cost
+
+diceInventory[type]++
+
+updateDiceUI()
+updateUI()
+
+}
+
+function updateDiceUI(){
+
+let div=document.getElementById("diceInventory")
+
+div.innerHTML=""
+
+for(let type in diceInventory){
+
+let btn=document.createElement("button")
+
+btn.className=type
+
+btn.innerHTML=type+" ("+diceInventory[type]+")"
+
+btn.onclick=function(){
+
+if(diceInventory[type]<=0)return
+
+activeDice=type
+
+diceInventory[type]--
+
+updateDiceUI()
+
+}
+
+div.appendChild(btn)
+
+}
+
+}
+
+function redeemCode(){
+
+let code=document.getElementById("codeInput").value.toLowerCase()
+
+if(code==="voldemort"){
+
+let stone=metals.find(m=>m.name==="Philosopher's Stone")
+
+inventory.push(stone)
+
+document.getElementById("result").innerHTML=
+`SECRET: <span class="admin">Philosopher's Stone</span> (1qa/sec)`
+
+render()
+updateUI()
+
+}
+
+else if(code==="whoisrickastley"){
+
+diceInventory.legendary++
+diceInventory.mythic++
+
+document.getElementById("result").innerHTML=
+`CODE REDEEMED: <span class="legendary">Legendary Dice</span> + <span class="mythic">Mythic Dice</span>`
+
+updateDiceUI()
+
+}
+
+}
+
+function updateUI(){
+
+document.getElementById("money").textContent=money.toFixed(2)
+
+document.getElementById("income").textContent=incomePerSecond.toFixed(2)
+
+document.querySelector("h2:nth-of-type(3)").textContent=
+`Inventory (${inventory.length}/100)`
+
+document.querySelector("h2:nth-of-type(4)").textContent=
+`Field (${field.length}/10)`
+
+}
+
+function render(){
+
+let invDiv=document.getElementById("inventory")
+
+invDiv.innerHTML=""
+
+inventory.forEach((m,i)=>{
+
+let tier=getRarityTier(m)
+
+let div=document.createElement("div")
+
+div.className="metalCard"
+
+div.innerHTML=`<span class="${tier}">${m.name}</span> ($${m.value}/sec)
+<br>
+<button onclick="addToField(${i})">Field</button>
+<button onclick="trashMetal(${i})">Trash</button>`
+
+invDiv.appendChild(div)
+
+})
+
+let fieldDiv=document.getElementById("field")
+
+fieldDiv.innerHTML=""
+
+field.forEach((m,i)=>{
+
+let tier=getRarityTier(m)
+
+let div=document.createElement("div")
+
+div.className="metalCard"
+
+div.innerHTML=`<span class="${tier}">${m.name}</span> ($${m.value}/sec)
+<br>
+<button onclick="removeFromField(${i})">Remove</button>`
+
+fieldDiv.appendChild(div)
+
+})
+
+}
+
+function addToField(i){
+
+if(field.length>=10)return
+
+let m=inventory.splice(i,1)[0]
+
+field.push(m)
+
+incomePerSecond+=m.value
+
+render()
+updateUI()
+
+}
+
+function removeFromField(i){
+
+if(inventory.length>=100)return
+
+let m=field.splice(i,1)[0]
+
+inventory.push(m)
+
+incomePerSecond-=m.value
+
+render()
+updateUI()
+
+}
+
+function trashMetal(i){
+
+inventory.splice(i,1)
+
+render()
+updateUI()
+
+}
+
+document.getElementById("rollBtn").onclick=function(){
+
+if(inventory.length>=100)return
+
+let metal
+
+if(activeDice){
+
+let filtered=metals.filter(m=>getRarityTier(m)===activeDice)
+
+metal=filtered[Math.floor(Math.random()*filtered.length)]
+
+activeDice=null
+
+}else{
+
+metal=weightedRoll()
+
+}
+
+inventory.push(metal)
+
+let tier=getRarityTier(metal)
+
+document.getElementById("result").innerHTML=
+`You rolled: <span class="${tier}"><b>${metal.name}</b></span> ($${metal.value}/sec)`
+
+render()
+updateUI()
+
+}
+
+setInterval(()=>{
+
+money+=incomePerSecond
+
+updateUI()
+
+},1000)
+
+updateUI()
+updateDiceUI()
+render()
+
+</script>
+
+</body>
+</html>
