@@ -83,6 +83,12 @@ Money: $<span id="money">0</span> |
 Income/sec: $<span id="income">0</span>
 </div>
 
+<!-- Save / Clear buttons -->
+<div style="margin:8px;">
+<button id="saveBtn">Save Data</button>
+<button id="clearBtn">Clear Data</button>
+</div>
+
 <button id="rollBtn">Roll Metal</button>
 
 <div id="result"></div>
@@ -136,277 +142,295 @@ let activeDice=null
 
 const metals=[
 
-{name:"iron",value:0.10,rarity:40},
-{name:"Copper",value:0.80,rarity:30},
-{name:"Gold",value:60,rarity:3},
-{name:"Platinum",value:35,rarity:2},
-{name:"Rhodium",value:150,rarity:1},
+/* ---------- COMMONS (very common, low value) ---------- */
+{name:"Tin",value:0.05,rarity:45},
+{name:"Aluminum",value:0.20,rarity:35},
+{name:"Lead",value:0.12,rarity:30},
+{name:"Brass",value:0.50,rarity:28},
+{name:"Nickel",value:0.40,rarity:22},
 
-{name:"Adamantium",value:500,rarity:0.1},
-{name:"Vibranium",value:600,rarity:0.05},
+/* ---------- UNCOMMONS (better than common) ----------
+   You requested iron, Copper and Rhodium be uncommon */
+{name:"iron",value:0.10,rarity:15},        // uncommon (changed earlier)
+{name:"Copper",value:0.80,rarity:10},      // uncommon (changed earlier)
+{name:"Bronze",value:1.50,rarity:11},
+{name:"Silver",value:5.00,rarity:12},
+{name:"Electrum",value:8.00,rarity:7},
+{name:"Rhodium",value:25.00,rarity:6},     // uncommon (kept uncommon), value set below rare tier
 
-{name:"Celestium",value:1500,rarity:0.01},
-{name:"Quantumium",value:3000,rarity:0.005},
+/* ---------- RARES (better than uncommon) ---------- */
+{name:"Gold",value:60.00,rarity:3},
+{name:"Platinum",value:90.00,rarity:2},
+{name:"Palladium",value:150.00,rarity:2.5},
+{name:"Iridium",value:200.00,rarity:1.3},
+{name:"Vibranium",value:40.00,rarity:1.2}, // "worst rare" (lowest-value rare but still above uncommon values)
 
-{name:"Omnidium",value:100000,rarity:0.0001},
+/* ---------- EPICS (better than rare) ---------- */
+{name:"Adamantium",value:500.00,rarity:0.5},
+{name:"Mithril",value:450.00,rarity:0.3},
+{name:"Orichalcum",value:900.00,rarity:0.15},
+{name:"Titanium",value:300.00,rarity:0.25},
+{name:"Tungsten",value:350.00,rarity:0.2},
 
-/* divine metals */
+/* ---------- LEGENDARY (better than epic) ---------- */
+{name:"Celestium",value:1500.00,rarity:0.02},
+{name:"Skyforged",value:5000.00,rarity:0.08},
+{name:"Stellarium",value:20000.00,rarity:0.03},
 
-{name:"Godsteel",value:500000,rarity:0.00001},
-{name:"Divinium",value:1000000,rarity:0.000005},
-{name:"Aetherion",value:2500000,rarity:0.000002},
+/* ---------- MYTHIC (very rare, better than legendary) ---------- */
+{name:"Quantumium",value:3000.00,rarity:0.005},
+{name:"Neutronium",value:25000.00,rarity:0.0005},
+{name:"Omnidium",value:100000.00,rarity:0.0001},
+{name:"Godsteel",value:500000.00,rarity:0.00001}, // edge of mythic threshold
 
-/* admin */
+/* ---------- DIVINE (near-impossible drops, top tier) ---------- */
+{name:"Divinium",value:1000000.00,rarity:0.000005},
+{name:"Aetherion",value:2500000.00,rarity:0.000002},
+{name:"Celestialium",value:50000000.00,rarity:0.0000005},
 
+/* ---------- ADMIN / SPECIAL ---------- */
 {name:"Philosopher's Stone",value:1e15,rarity:0}
 
 ]
 
 function getRarityTier(m){
 
-if(m.name==="Philosopher's Stone")return"admin"
+  if(m.name==="Philosopher's Stone") return "admin"
 
-if(m.rarity>=20)return"common"
-if(m.rarity>=5)return"uncommon"
-if(m.rarity>=1)return"rare"
-if(m.rarity>=0.1)return"epic"
-if(m.rarity>=0.01)return"legendary"
-if(m.rarity>=0.00001)return"mythic"
+  // thresholds: higher rarity number = more common
+  if(m.rarity >= 20) return "common"
+  if(m.rarity >= 5) return "uncommon"
+  if(m.rarity >= 1) return "rare"
+  if(m.rarity >= 0.1) return "epic"
+  if(m.rarity >= 0.01) return "legendary"
+  if(m.rarity >= 0.00001) return "mythic"
 
-return"divine"
+  return "divine"
 }
 
 function weightedRoll(){
 
-let total=metals.reduce((sum,m)=>sum+m.rarity,0)
+  let total = metals.reduce((sum,m) => sum + m.rarity, 0)
+  let rand = Math.random() * total
+  let running = 0
 
-let rand=Math.random()*total
+  for(let m of metals){
+    running += m.rarity
+    if(rand <= running) return m
+  }
 
-let running=0
-
-for(let m of metals){
-
-running+=m.rarity
-
-if(rand<=running)return m
-
-}
-
+  // fallback: return the last item
+  return metals[metals.length - 1]
 }
 
 function buyDice(type,cost){
-
-if(money<cost)return
-
-money-=cost
-
-diceInventory[type]++
-
-updateDiceUI()
-updateUI()
-
+  if(money < cost) return
+  money -= cost
+  diceInventory[type]++
+  updateDiceUI()
+  updateUI()
 }
 
 function updateDiceUI(){
-
-let div=document.getElementById("diceInventory")
-
-div.innerHTML=""
-
-for(let type in diceInventory){
-
-let btn=document.createElement("button")
-
-btn.className=type
-
-btn.innerHTML=type+" ("+diceInventory[type]+")"
-
-btn.onclick=function(){
-
-if(diceInventory[type]<=0)return
-
-activeDice=type
-
-diceInventory[type]--
-
-updateDiceUI()
-
-}
-
-div.appendChild(btn)
-
-}
-
+  let div = document.getElementById("diceInventory")
+  div.innerHTML = ""
+  for(let type in diceInventory){
+    let btn = document.createElement("button")
+    btn.className = type
+    btn.innerHTML = type + " (" + diceInventory[type] + ")"
+    btn.onclick = function(){
+      if(diceInventory[type] <= 0) return
+      activeDice = type
+      diceInventory[type]--
+      updateDiceUI()
+    }
+    div.appendChild(btn)
+  }
 }
 
 function redeemCode(){
+  let code = document.getElementById("codeInput").value.toLowerCase()
 
-let code=document.getElementById("codeInput").value.toLowerCase()
-
-if(code==="voldemort"){
-
-let stone=metals.find(m=>m.name==="Philosopher's Stone")
-
-inventory.push(stone)
-
-document.getElementById("result").innerHTML=
-`SECRET: <span class="admin">Philosopher's Stone</span> (1qa/sec)`
-
-render()
-updateUI()
-
-}
-
-else if(code==="whoisrickastley"){
-
-diceInventory.legendary++
-diceInventory.mythic++
-
-document.getElementById("result").innerHTML=
-`CODE REDEEMED: <span class="legendary">Legendary Dice</span> + <span class="mythic">Mythic Dice</span>`
-
-updateDiceUI()
-
-}
-
+  if(code === "voldemort"){
+    let stone = metals.find(m => m.name === "Philosopher's Stone")
+    inventory.push(stone)
+    document.getElementById("result").innerHTML =
+      `SECRET: <span class="admin">Philosopher's Stone</span> (1qa/sec)`
+    render()
+    updateUI()
+  } else if(code === "whoisrickastley"){
+    diceInventory.legendary++
+    diceInventory.mythic++
+    document.getElementById("result").innerHTML =
+      `CODE REDEEMED: <span class="legendary">Legendary Dice</span> + <span class="mythic">Mythic Dice</span>`
+    updateDiceUI()
+  }
 }
 
 function updateUI(){
-
-document.getElementById("money").textContent=money.toFixed(2)
-
-document.getElementById("income").textContent=incomePerSecond.toFixed(2)
-
-document.querySelector("h2:nth-of-type(3)").textContent=
-`Inventory (${inventory.length}/100)`
-
-document.querySelector("h2:nth-of-type(4)").textContent=
-`Field (${field.length}/10)`
-
+  document.getElementById("money").textContent = money.toFixed(2)
+  document.getElementById("income").textContent = incomePerSecond.toFixed(2)
+  document.querySelector("h2:nth-of-type(3)").textContent =
+    `Inventory (${inventory.length}/100)`
+  document.querySelector("h2:nth-of-type(4)").textContent =
+    `Field (${field.length}/10)`
 }
 
 function render(){
+  let invDiv = document.getElementById("inventory")
+  invDiv.innerHTML = ""
+  inventory.forEach((m,i) => {
+    let tier = getRarityTier(m)
+    let div = document.createElement("div")
+    div.className = "metalCard"
+    div.innerHTML = `<span class="${tier}">${m.name}</span> ($${m.value}/sec)
+      <br>
+      <button onclick="addToField(${i})">Field</button>
+      <button onclick="trashMetal(${i})">Trash</button>`
+    invDiv.appendChild(div)
+  })
 
-let invDiv=document.getElementById("inventory")
-
-invDiv.innerHTML=""
-
-inventory.forEach((m,i)=>{
-
-let tier=getRarityTier(m)
-
-let div=document.createElement("div")
-
-div.className="metalCard"
-
-div.innerHTML=`<span class="${tier}">${m.name}</span> ($${m.value}/sec)
-<br>
-<button onclick="addToField(${i})">Field</button>
-<button onclick="trashMetal(${i})">Trash</button>`
-
-invDiv.appendChild(div)
-
-})
-
-let fieldDiv=document.getElementById("field")
-
-fieldDiv.innerHTML=""
-
-field.forEach((m,i)=>{
-
-let tier=getRarityTier(m)
-
-let div=document.createElement("div")
-
-div.className="metalCard"
-
-div.innerHTML=`<span class="${tier}">${m.name}</span> ($${m.value}/sec)
-<br>
-<button onclick="removeFromField(${i})">Remove</button>`
-
-fieldDiv.appendChild(div)
-
-})
-
+  let fieldDiv = document.getElementById("field")
+  fieldDiv.innerHTML = ""
+  field.forEach((m,i) => {
+    let tier = getRarityTier(m)
+    let div = document.createElement("div")
+    div.className = "metalCard"
+    div.innerHTML = `<span class="${tier}">${m.name}</span> ($${m.value}/sec)
+      <br>
+      <button onclick="removeFromField(${i})">Remove</button>`
+    fieldDiv.appendChild(div)
+  })
 }
 
 function addToField(i){
-
-if(field.length>=10)return
-
-let m=inventory.splice(i,1)[0]
-
-field.push(m)
-
-incomePerSecond+=m.value
-
-render()
-updateUI()
-
+  if(field.length >= 10) return
+  let m = inventory.splice(i,1)[0]
+  field.push(m)
+  incomePerSecond += m.value
+  render()
+  updateUI()
 }
 
 function removeFromField(i){
-
-if(inventory.length>=100)return
-
-let m=field.splice(i,1)[0]
-
-inventory.push(m)
-
-incomePerSecond-=m.value
-
-render()
-updateUI()
-
+  if(inventory.length >= 100) return
+  let m = field.splice(i,1)[0]
+  inventory.push(m)
+  incomePerSecond -= m.value
+  render()
+  updateUI()
 }
 
 function trashMetal(i){
-
-inventory.splice(i,1)
-
-render()
-updateUI()
-
+  inventory.splice(i,1)
+  render()
+  updateUI()
 }
 
-document.getElementById("rollBtn").onclick=function(){
+document.getElementById("rollBtn").onclick = function(){
+  if(inventory.length >= 100) return
 
-if(inventory.length>=100)return
+  let metal
+  if(activeDice){
+    let filtered = metals.filter(m => getRarityTier(m) === activeDice)
+    if(filtered.length === 0){
+      metal = weightedRoll()
+    } else {
+      metal = filtered[Math.floor(Math.random() * filtered.length)]
+    }
+    activeDice = null
+  } else {
+    metal = weightedRoll()
+  }
 
-let metal
-
-if(activeDice){
-
-let filtered=metals.filter(m=>getRarityTier(m)===activeDice)
-
-metal=filtered[Math.floor(Math.random()*filtered.length)]
-
-activeDice=null
-
-}else{
-
-metal=weightedRoll()
-
+  inventory.push(metal)
+  let tier = getRarityTier(metal)
+  document.getElementById("result").innerHTML =
+    `You rolled: <span class="${tier}"><b>${metal.name}</b></span> ($${metal.value}/sec)`
+  render()
+  updateUI()
 }
 
-inventory.push(metal)
+/* ========== Local storage save/load/clear ========== */
 
-let tier=getRarityTier(metal)
+const SAVE_KEY = 'metalRollSave_v1'
 
-document.getElementById("result").innerHTML=
-`You rolled: <span class="${tier}"><b>${metal.name}</b></span> ($${metal.value}/sec)`
-
-render()
-updateUI()
-
+function saveGame(){
+  const data = {
+    money: money,
+    inventory: inventory.map(m => m.name),
+    field: field.map(m => m.name),
+    diceInventory: {...diceInventory}
+  }
+  try {
+    localStorage.setItem(SAVE_KEY, JSON.stringify(data))
+    document.getElementById("result").innerText = "Game saved."
+  } catch(e) {
+    console.error("Save failed", e)
+    document.getElementById("result").innerText = "Save failed (storage error)."
+  }
 }
+
+function loadGame(){
+  const raw = localStorage.getItem(SAVE_KEY)
+  if(!raw) return false
+  try {
+    const data = JSON.parse(raw)
+    if(typeof data.money === 'number') money = data.money
+    inventory = Array.isArray(data.inventory) ? data.inventory.map(n => metals.find(m => m.name === n)).filter(Boolean) : []
+    field = Array.isArray(data.field) ? data.field.map(n => metals.find(m => m.name === n)).filter(Boolean) : []
+    if(typeof data.diceInventory === 'object' && data.diceInventory !== null){
+      for(let key in diceInventory){
+        diceInventory[key] = Number(data.diceInventory[key] || 0)
+      }
+    }
+    incomePerSecond = field.reduce((sum,m) => sum + (m?.value || 0), 0)
+    updateDiceUI()
+    render()
+    updateUI()
+    document.getElementById("result").innerText = "Saved game loaded."
+    return true
+  } catch(e) {
+    console.error("Load failed", e)
+    document.getElementById("result").innerText = "Load failed (corrupt save)."
+    return false
+  }
+}
+
+function clearGame(){
+  if(!confirm("Clear saved data and reset the game? This cannot be undone.")) return
+  try {
+    localStorage.removeItem(SAVE_KEY)
+  } catch(e){
+    console.error("Clear failed", e)
+  }
+  money = 0
+  inventory = []
+  field = []
+  for(let k in diceInventory) diceInventory[k] = 0
+  incomePerSecond = 0
+  activeDice = null
+  updateDiceUI()
+  render()
+  updateUI()
+  document.getElementById("result").innerText = "Saved data cleared and game reset."
+}
+
+/* Hook up buttons */
+
+document.getElementById("saveBtn").addEventListener("click", saveGame)
+document.getElementById("clearBtn").addEventListener("click", clearGame)
+
+/* Auto-load saved game on startup if available */
+window.addEventListener("DOMContentLoaded", ()=>{
+  loadGame()
+})
+
+/* ========== End local storage section ========== */
 
 setInterval(()=>{
-
-money+=incomePerSecond
-
-updateUI()
-
+  money += incomePerSecond
+  updateUI()
 },1000)
 
 updateUI()
