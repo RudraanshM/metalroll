@@ -1,811 +1,1268 @@
-<!DOCTYPE html>
-<html>
-<head>
-   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-16CCLCQMKW"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-16CCLCQMKW');
-</script>
-<meta charset="UTF-8">
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Metal Roll</title>
-
 <style>
+:root{color-scheme:dark;--bg:#0c0c11;--panel:#16161e;--panel2:#1d1d27;--line:#2a2a38;--fg:#ecebf3;--mute:#8d8ba3;--gold:#ffd24a;--danger:#ff6b6b;--ok:#63ff8a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;font-size:14px;line-height:1.4;padding:14px 16px 90px}
+h1{margin:0;font-size:22px;letter-spacing:.5px}
+h2{margin:0 0 10px;font-size:15px;text-transform:uppercase;letter-spacing:1px;color:var(--mute)}
+.hidden{display:none!important}
+.app{max-width:1100px;margin:0 auto}
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px 12px;display:flex;flex-direction:column;align-items:flex-start;min-width:96px}
+.chip span{font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.8px}
+.chip b{font-size:16px;font-variant-numeric:tabular-nums}
+.chip.wide{min-width:200px}
+.tabs{display:flex;gap:8px;margin:6px 0 14px}
+.tab{background:var(--panel);color:var(--mute);border:1px solid var(--line);border-radius:10px;padding:9px 18px;cursor:pointer;font:inherit;font-weight:600}
+.tab.on{background:var(--gold);color:#111;border-color:var(--gold)}
+.tab.locked{opacity:.55}
+.grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:860px){.grid{grid-template-columns:330px 1fr}.span2{grid-column:1/-1}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
+.card.span2{grid-column:1/-1}
+.btn{background:var(--panel2);color:var(--fg);border:1px solid var(--line);border-radius:9px;padding:8px 14px;cursor:pointer;font:inherit;font-weight:600}
+.btn:hover{border-color:#55556a}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.big{display:block;width:100%;background:var(--gold);color:#111;border-color:var(--gold);font-size:18px;padding:14px;border-radius:12px}
+.btn.big small{display:block;font-size:12px;font-weight:600;opacity:.75}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--danger)}
+.btn.on{outline:2px solid #fff;outline-offset:1px}
+.btn.wide{width:100%;margin:10px 0 0}
+.row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.row input{flex:1;min-width:120px;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:9px;padding:8px 10px;font:inherit}
+.result{margin-top:12px;min-height:56px;background:var(--bg);border:1px dashed var(--line);border-radius:10px;padding:10px;font-size:15px}
+.hint{color:var(--mute);font-size:12px;margin:10px 0 0}
+.sub{color:var(--mute);font-size:12px;text-transform:uppercase;letter-spacing:.8px;margin:8px 0 4px}
+.seg{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:12px}
+.seg .btn{padding:7px 12px}
+.seg .qty{margin-left:auto;color:var(--mute);font-size:12px;display:flex;gap:4px;align-items:center}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.item{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.item .name{font-weight:700;font-size:15px}
+.item .price{font-variant-numeric:tabular-nums;color:var(--gold);font-weight:700}
+.item .desc{color:var(--mute);font-size:12px;min-height:32px}
+.item .own{font-size:12px;color:var(--mute)}
+.item .btn{margin:0;align-self:flex-start}
+.swatch{width:12px;height:12px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:middle}
+.grid-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;max-height:340px;overflow:auto;padding-right:4px}
+.metalCard{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:9px;display:flex;flex-direction:column;gap:6px}
+.metalCard .val{font-size:12px;color:var(--mute);font-variant-numeric:tabular-nums}
+.metalCard .acts{display:flex;gap:6px}
+.metalCard .acts .btn{padding:5px 10px;font-size:12px}
+.chipbtn{margin:3px}
+.empty{color:var(--mute);font-size:13px;padding:8px}
+/* tiers */
+.common{color:#bfbfbf}
+.uncommon{color:#63ff8a}
+.rare{color:#4da6ff}
+.epic{color:#c46bff}
+.legendary{color:#ffd84d}
+.mythic{color:#b040ff}
+.divine{color:#ffa500}
+.godly{color:#fff176;text-shadow:0 0 8px #fff176;font-weight:700}
+.celestial{color:#9ff3ff;font-weight:700;text-shadow:0 0 10px #7fe7ff;animation:twinkle 2.2s infinite}
+@keyframes twinkle{50%{text-shadow:0 0 2px #7fe7ff,0 0 16px #3ac9ff}}
+.admin{background:linear-gradient(90deg,red,orange,yellow,green,blue,indigo,violet);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}
+/* toast */
+#msg{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:#222a;color:#fff;border:1px solid var(--line);padding:9px 16px;border-radius:999px;font-size:14px;max-width:92vw;opacity:0;transition:opacity .2s;pointer-events:none;z-index:5}
+#msg.show{opacity:1}
+/* mine */
+#mineMount{position:relative;width:100%;height:460px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0a0908}
+#mineMount canvas{display:block;width:100%;height:100%}
+#mineHud{position:absolute;left:10px;top:10px;background:rgba(0,0,0,.6);padding:8px 12px;border-radius:10px;font-size:13px;line-height:1.6;pointer-events:none;font-variant-numeric:tabular-nums}
+#mineHint{position:absolute;left:0;right:0;bottom:14px;text-align:center;font-size:15px;pointer-events:none;text-shadow:0 0 4px #000}
+#mineHint span{background:rgba(0,0,0,.6);padding:6px 12px;border-radius:8px}
+#mineGauge{position:absolute;right:12px;top:14px;bottom:14px;width:10px;background:rgba(255,255,255,.12);border-radius:6px;overflow:hidden}
+#gaugeFill{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(#ffd24a,#ff6a2a)}
+#mineView .controls{font-size:12px;color:var(--mute);margin-top:8px}
 
-body{
-background:#111;
-color:white;
-font-family:Arial;
-text-align:center;
-}
-
-button{
-padding:8px 14px;
-margin:4px;
-border:none;
-cursor:pointer;
-border-radius:6px;
-}
-
-#rollBtn{
-background:gold;
-color:black;
-font-weight:bold;
-}
-
-.metalCard{
-border:1px solid #444;
-margin:6px;
-padding:6px;
-border-radius:6px;
-background:#1a1a1a;
-}
-
-.inventory,.field{
-max-height:250px;
-overflow:auto;
-border:1px solid #333;
-padding:6px;
-margin:10px;
-}
-
-.statBox{
-font-size:18px;
-margin:10px;
-}
-
-/* rarity colors */
-
-.common{color:#bfbfbf;}
-.uncommon{color:#63ff8a;}
-.rare{color:#4da6ff;}
-.epic{color:#c46bff;}
-.legendary{color:#ffd84d;}
-.mythic{color:#800080;}
-.divine{color:orange;}
-/* new godly rarity: glowing yellow */
-.godly{color:#fff176; text-shadow: 0 0 8px #fff176; font-weight:bold;}
-
-.admin{
-background:linear-gradient(90deg,red,orange,yellow,green,blue,indigo,violet);
--webkit-background-clip:text;
-color:transparent;
-font-weight:bold;
-}
-
-.shop{
-border:1px solid #333;
-padding:10px;
-margin:10px;
-}
-
+/* ---- touch and small screens ---- */
+.joy{display:none;position:absolute;left:14px;bottom:14px;width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.22);touch-action:none}
+.joy i{position:absolute;left:37px;top:37px;width:56px;height:56px;border-radius:50%;background:rgba(255,210,74,.55);transition:none}
+.touch .joy{display:block}
+.mineAction{position:absolute;right:14px;bottom:14px;width:104px;height:104px;border-radius:50%;border:none;background:var(--gold);color:#111;font:inherit;font-weight:800;font-size:16px;opacity:.35;pointer-events:none;touch-action:manipulation;box-shadow:0 4px 16px #0008}
+.mineAction.ready{opacity:1;pointer-events:auto}
+#mineMount{touch-action:none;user-select:none;-webkit-user-select:none}
+#mineMount canvas{touch-action:none}
+.touch .tabs{position:sticky;top:0;z-index:6;background:var(--bg);padding:8px 0}
+.touch .tab{flex:1;padding:12px 10px}
+.touch .btn{min-height:44px;padding:10px 14px;touch-action:manipulation}
+.touch .btn.big{min-height:60px}
+.touch .chipbtn{min-height:40px}
+.touch .metalCard .acts .btn{min-height:38px}
+.touch input{font-size:16px}
+.touch #mineHint{bottom:150px}
+.touch #msg{bottom:84px}
+.compact .chip{min-width:0;flex:1 1 40%;padding:6px 8px}
+.compact .chip.wide{flex-basis:100%}
+.compact h1{font-size:19px}
+.compact .cards{grid-template-columns:1fr}
+.compact .grid-cards{grid-template-columns:1fr 1fr;max-height:none}
+.compact .seg .qty{margin-left:0;width:100%;justify-content:flex-end}
+.compact .row input{min-width:0;flex:1 1 100%}
+.compact #mineMount{height:58vh;min-height:300px}
+.compact #mineHud{font-size:12px;padding:6px 9px}
+.compact #mineGauge{top:10px;bottom:10px}
+.compact .mineAction{width:88px;height:88px;font-size:14px}
+.compact .joy{width:112px;height:112px}
+.compact .joy i{left:31px;top:31px}
 </style>
-</head>
 
-<body>
+<div class="app">
+<header class="top">
+  <h1>Metal Roll</h1>
+  <div class="chips">
+    <div class="chip"><span>Money</span><b id="money">$0</b></div>
+    <div class="chip"><span>Income / s</span><b id="income">$0</b></div>
+    <div class="chip"><span>Tickets</span><b id="tickets">5</b></div>
+    <div class="chip wide"><span>Active buffs</span><b id="buffTxt">none</b></div>
+  </div>
+</header>
 
-<h1>Metal Roll</h1>
+<nav class="tabs">
+  <button id="tabSurface" class="tab on">Surface</button>
+  <button id="tabMine" class="tab locked">Mine</button>
+</nav>
 
-<div class="statBox">
-Money: $<span id="money">0</span> |
-Income/sec: $<span id="income">0</span>
+<div id="msg"></div>
+
+<main id="surface" class="grid">
+  <section class="card">
+    <h2>Roll</h2>
+    <button id="rollBtn" class="btn big">Roll Metal<small>costs 1 ticket</small></button>
+    <div id="result" class="result">Roll to find your first metal.</div>
+    <div class="row"><input id="codeInput" placeholder="Enter code"><button id="redeemBtn" class="btn">Redeem</button></div>
+    <div class="row"><button id="saveBtn" class="btn ghost">Save</button><button id="clearBtn" class="btn ghost danger">Clear Data</button></div>
+    <p class="hint">Tickets refill 1 every 30 seconds (max 99). Mining ore and entering the mine also give tickets. Rolling a Legendary or better unlocks the mine.</p>
+  </section>
+
+  <section class="card">
+    <h2 id="fieldTitle">Field</h2>
+    <div id="field" class="grid-cards"></div>
+  </section>
+
+  <section class="card span2">
+    <h2 id="invTitle">Inventory</h2>
+    <div id="inventory" class="grid-cards"></div>
+  </section>
+
+  <section class="card span2">
+    <h2>Dice & potions</h2>
+    <div class="sub">Dice (click to equip for your next roll)</div>
+    <div id="diceInventory"></div>
+    <div id="equipTxt" class="hint"></div>
+    <div class="sub">Potions (click to drink)</div>
+    <div id="potionInventory"></div>
+  </section>
+
+  <section class="card span2">
+    <div class="seg">
+      <button id="shopDiceTab" class="btn on">Dice</button>
+      <button id="shopPotTab" class="btn">Potions</button>
+      <div class="qty">Qty
+        <button class="btn" data-q="1">1</button><button class="btn" data-q="5">5</button><button class="btn" data-q="10">10</button>
+      </div>
+    </div>
+    <div id="shopDice" class="cards"></div>
+    <div id="shopPotions" class="cards hidden"></div>
+    <button id="potToggle" class="btn ghost wide hidden"></button>
+  </section>
+
+</main>
+
+<main id="mine" class="hidden">
+  <section class="card">
+    <div id="mineMount">
+      <div id="mineHud"></div>
+      <div id="mineGauge"><div id="gaugeFill"></div></div>
+      <div id="mineHint"></div>
+      <div id="joy" class="joy"><i id="joyKnob"></i></div>
+      <button id="mineAction" class="mineAction">Mine</button>
+    </div>
+    <p class="controls">W/A/S/D walk · Arrow keys or drag to look · E to mine ore or ride the elevator · Leaving by the Surface tab loses your bag.</p>
+  </section>
+</main>
 </div>
-
-<!-- Save / Clear buttons -->
-<div style="margin:8px;">
-<button id="saveBtn">Save Data</button>
-<button id="clearBtn">Clear Data</button>
-</div>
-
-<button id="rollBtn">Roll Metal</button>
-
-<div id="result"></div>
-
-<div style="margin:10px">
-<input id="codeInput" placeholder="enter code">
-<button onclick="redeemCode()">Redeem</button>
-</div>
-
-<h2>Dice Shop</h2>
-
-<div class="shop">
-
-<button onclick="buyDice('common',5000)">Common Dice ($5,000)</button>
-<button onclick="buyDice('uncommon',25000)">Uncommon Dice ($25,000)</button>
-<button onclick="buyDice('rare',100000)">Rare Dice ($100,000)</button>
-<button onclick="buyDice('epic',750000)">Epic Dice ($750,000)</button>
-<button onclick="buyDice('legendary',5000000)">Legendary Dice ($5,000,000)</button>
-<button onclick="buyDice('mythic',50000000)">Mythic Dice ($50,000,000)</button>
-<button onclick="buyDice('divine',1000000000)">Divine Dice ($1,000,000,000)</button>
-<!-- new Godly Dice -->
-<button onclick="buyDice('godly',50000000000)">Godly Dice ($50,000,000,000)</button>
-
-<p>Dice Inventory</p>
-<div id="diceInventory"></div>
-
-</div>
-
-<h2>Inventory (0/100)</h2>
-<div class="inventory" id="inventory"></div>
-
-<h2>Field (0/10)</h2>
-<div class="field" id="field"></div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-
-let money = 0
-let inventory = []
-let field = []
-let incomePerSecond = 0
-
-let diceInventory={
-common:0,
-uncommon:0,
-rare:0,
-epic:0,
-legendary:0,
-mythic:0,
-divine:0,
-godly:0   // added godly dice inventory
+/* ================= DATA ================= */
+const TIERS=["common","uncommon","rare","epic","legendary","mythic","divine","godly","celestial"];
+const metals=[];
+function one(tier,name,value,rarity){metals.push({name,value,rarity,tier});}
+function add(tier,value,rarity,list){
+  list.split(",").map(s=>s.trim()).filter(Boolean).forEach(n=>one(tier,n,value,rarity));
 }
 
-let activeDice=null
+/* COMMON */
+one("common","Tin",0.05,45);one("common","Aluminum",0.20,35);one("common","Lead",0.12,30);
+one("common","Brass",0.50,28);one("common","Nickel",0.40,22);
+add("common",0.05,45,"Quartz, Calcite, Feldspar, Mica, Clay, Sandstone, Shale, Basalt, Limestone, Dolomite, Gypsum, Chalk, Hematite, Magnetite, Pyrite, Chalcopyrite, Sphalerite, Malachite, Azurite, Limonite, Goethite, Bauxite, Kaolinite, Olivine, Garnet, Obsidian, Jasper, Agate, Petrified Wood, Apatite, Sodalite, Serpentine, Chert, Diopside, Fluorite, Kyanite, Moonstone, Amber, Beryl, Quartzite, Rhyolite, Sericite, Lapis Lazuli, Peridot, Chalcedony, Opal, Coal, Graphite, Barite");
 
-const metals=[
+/* UNCOMMON */
+one("uncommon","Iron",0.10,15);one("uncommon","Copper",0.80,10);one("uncommon","Bronze",1.50,11);
+one("uncommon","Silver",5.00,12);one("uncommon","Electrum",8.00,7);one("uncommon","Rhodium",25.00,6);
+add("uncommon",0.10,15,"Zinc, Cobalt, Manganese, Chromium, Vanadium, Gallium, Indium, Germanium, Niobium, Tantalum, Zirconium, Scandium, Lithium, Magnesium, Potassium, Sodium, Topaz, Tourmaline, Spinel, Onyx, Carnelian, Turquoise, Chrysocolla, Andalusite, Iolite, Sunstone, Rhodonite, Amazonite, Chrysoprase, Sphene, Euclase, Zoisite, Kunzite, Morganite, Heliodor, Grossular, Ilmenite, Chromite, Cassiterite, Galena, Wulfenite, Scheelite, Smithsonite, Realgar, Orpiment, Stibnite, Molybdenite, Talc, Zircon");
 
-/* ---------- COMMONS (very common, low value) ---------- */
-{name:"Tin",value:0.05,rarity:45},
-{name:"Aluminum",value:0.20,rarity:35},
-{name:"Lead",value:0.12,rarity:30},
-{name:"Brass",value:0.50,rarity:28},
-{name:"Nickel",value:0.40,rarity:22},
+/* RARE */
+one("rare","Gold",60,3);one("rare","Platinum",90,2);one("rare","Palladium",150,2.5);
+one("rare","Iridium",200,1.3);one("rare","Vibranium",40,1.2);
+add("rare",60,3,"Ruthenium, Rhenium, Osmium, Rhodium (Element), Ruthenium (Element), Tungstenite, Tellurium, Ruthenate, RutheniumOxide, ScandiumOxide, Emerald, Sapphire, Ruby, Alexandrite, Tsavorite, Demantoid, ImperialTopaz, FireOpal, Cat's Eye, Labradorite, Zircon (Gem), Spinel (Gem), Paraiba Tourmaline, PinkTourmaline, TsavoriteGarnet, RedBeryl, Benitoite, Jeremejevite, Grandidierite, Painite, Musgravite, Taaffeite, BlackOpal, Jadeite, SpinelRare, Adularia, Serendibite, Poudretteite, Bixbite, Pietersite, Kornerupine, Anatase, Triphane, Europium, Hafnium, Niobium (Element), Tantalum (Element)");
 
-/* 50 real/common materials (metals, minerals, gems, ores) */
-{name:"Quartz",value:0.05,rarity:45},
-{name:"Calcite",value:0.05,rarity:45},
-{name:"Feldspar",value:0.05,rarity:45},
-{name:"Mica",value:0.05,rarity:45},
-{name:"Clay",value:0.05,rarity:45},
-{name:"Sandstone",value:0.05,rarity:45},
-{name:"Shale",value:0.05,rarity:45},
-{name:"Basalt",value:0.05,rarity:45},
-{name:"Limestone",value:0.05,rarity:45},
-{name:"Dolomite",value:0.05,rarity:45},
-{name:"Gypsum",value:0.05,rarity:45},
-{name:"Chalk",value:0.05,rarity:45},
-{name:"Hematite",value:0.05,rarity:45},
-{name:"Magnetite",value:0.05,rarity:45},
-{name:"Pyrite",value:0.05,rarity:45},
-{name:"Chalcopyrite",value:0.05,rarity:45},
-{name:"Sphalerite",value:0.05,rarity:45},
-{name:"Malachite",value:0.05,rarity:45},
-{name:"Azurite",value:0.05,rarity:45},
-{name:"Limonite",value:0.05,rarity:45},
-{name:"Goethite",value:0.05,rarity:45},
-{name:"Bauxite",value:0.05,rarity:45},
-{name:"Kaolinite",value:0.05,rarity:45},
-{name:"Olivine",value:0.05,rarity:45},
-{name:"Garnet",value:0.05,rarity:45},
-{name:"Obsidian",value:0.05,rarity:45},
-{name:"Jasper",value:0.05,rarity:45},
-{name:"Agate",value:0.05,rarity:45},
-{name:"Petrified Wood",value:0.05,rarity:45},
-{name:"Apatite",value:0.05,rarity:45},
-{name:"Sodalite",value:0.05,rarity:45},
-{name:"Serpentine",value:0.05,rarity:45},
-{name:"Chert",value:0.05,rarity:45},
-{name:"Diopside",value:0.05,rarity:45},
-{name:"Fluorite",value:0.05,rarity:45},
-{name:"Kyanite",value:0.05,rarity:45},
-{name:"Moonstone",value:0.05,rarity:45},
-{name:"Amber",value:0.05,rarity:45},
-{name:"Beryl",value:0.05,rarity:45},
-{name:"Quartzite",value:0.05,rarity:45},
-{name:"Rhyolite",value:0.05,rarity:45},
-{name:"Sericite",value:0.05,rarity:45},
-{name:"Lapis Lazuli",value:0.05,rarity:45},
-{name:"Peridot",value:0.05,rarity:45},
-{name:"Chalcedony",value:0.05,rarity:45},
-{name:"Opal",value:0.05,rarity:45},
-{name:"Coal",value:0.05,rarity:45},
-{name:"Graphite",value:0.05,rarity:45},
-{name:"Barite",value:0.05,rarity:45},
+/* EPIC */
+one("epic","Adamantium",500,0.5);one("epic","Mithril",450,0.3);one("epic","Orichalcum",900,0.15);
+one("epic","Titanium",300,0.25);one("epic","Tungsten",350,0.2);
+add("epic",500,0.5,"Diamond, BlueDiamond, PinkDiamond, GolcondaDiamond, Carbonado, Jade, ImperialJade, AlexandriteFine, Paraiba, PainiteFine, RedBerylFine, MusgraviteFine, TaaffeiteFine, BenitoiteFine, BlackOpalFine, GrandidieriteFine, JeremejeviteFine, PoudretteiteFine, BixbiteFine, PlatinumGroup, IridiumFine, OsmiumFine, RheniumFine, HafniumFine, ScandiumFine, GalliumArsenide, IndiumTinOxide, Neodymium, Praseodymium, Dysprosium, Terbium, EuropiumFine, Yttrium, Gadolinium, Promethium, Samarium, Holmium, Erbium, Thulium, Lutetium, RutheniumFine, PalladiumFine, SapphireFine, EmeraldFine, RubyFine, SpinelFine");
 
-/* ---------- UNCOMMONS (better than common) ----------
-   You requested iron, Copper and Rhodium be uncommon */
-{name:"iron",value:0.10,rarity:15},        // uncommon (changed earlier)
-{name:"Copper",value:0.80,rarity:10},      // uncommon (changed earlier)
-{name:"Bronze",value:1.50,rarity:11},
-{name:"Silver",value:5.00,rarity:12},
-{name:"Electrum",value:8.00,rarity:7},
-{name:"Rhodium",value:25.00,rarity:6},     // uncommon (kept uncommon), value set below rare tier
+/* LEGENDARY */
+one("legendary","Celestium",1500,0.02);one("legendary","Skyforged",5000,0.08);one("legendary","Stellarium",20000,0.03);
+add("legendary",1500,0.02,"HopeDiamond, CullinanDiamond, PinkStar, OrangeDiamond, BlueDiamondFine, SerendibiteFine, JadeiteImperial, TaaffeiteLegend, PainiteLegend, RedDiamond, PinkDiamondFine, ParaibaFine, AlexandriteLegend, BlackOpalLegend, TaaffeitePrime, MusgraviteLegend, BenitoiteLegend, RedBerylLegend, JeremejeviteLegend, PoudretteiteLegend, KunziteLegend, ImperialTopazLegend, GrandidieriteLegend, BixbiteLegend, PietersiteLegend, KornerupineLegend, MeteoricIron, Pallasite, SideriteFine, IronMeteoroid, Gibeon, Seymchan, CampoDelCielo, Muonionalusta, FossilAmberRare, MeteoriticPallasite, MeteoriticSiderite, MeteoriticIron, GoldNugget, PlatinumNugget, ElectrumHistoric, MeteoritePallasite, PetrifiedIvory, AntiqueBronze, HistoricSilver, HistoricGold, AncientMeteoricIron, Aurichalcum");
 
-/* 50 real uncommon materials (metals, semi-precious gems, ores) */
-{name:"Zinc",value:0.10,rarity:15},
-{name:"Cobalt",value:0.10,rarity:15},
-{name:"Manganese",value:0.10,rarity:15},
-{name:"Chromium",value:0.10,rarity:15},
-{name:"Vanadium",value:0.10,rarity:15},
-{name:"Gallium",value:0.10,rarity:15},
-{name:"Indium",value:0.10,rarity:15},
-{name:"Germanium",value:0.10,rarity:15},
-{name:"Niobium",value:0.10,rarity:15},
-{name:"Tantalum",value:0.10,rarity:15},
-{name:"Zirconium",value:0.10,rarity:15},
-{name:"Scandium",value:0.10,rarity:15},
-{name:"Lithium",value:0.10,rarity:15},
-{name:"Magnesium",value:0.10,rarity:15},
-{name:"Potassium",value:0.10,rarity:15},
-{name:"Sodium",value:0.10,rarity:15},
-{name:"Topaz",value:0.10,rarity:15},
-{name:"Tourmaline",value:0.10,rarity:15},
-{name:"Spinel",value:0.10,rarity:15},
-{name:"Onyx",value:0.10,rarity:15},
-{name:"Carnelian",value:0.10,rarity:15},
-{name:"Turquoise",value:0.10,rarity:15},
-{name:"Chrysocolla",value:0.10,rarity:15},
-{name:"Andalusite",value:0.10,rarity:15},
-{name:"Iolite",value:0.10,rarity:15},
-{name:"Sunstone",value:0.10,rarity:15},
-{name:"Rhodonite",value:0.10,rarity:15},
-{name:"Amazonite",value:0.10,rarity:15},
-{name:"Chrysoprase",value:0.10,rarity:15},
-{name:"Sphene",value:0.10,rarity:15},
-{name:"Euclase",value:0.10,rarity:15},
-{name:"Zoisite",value:0.10,rarity:15},
-{name:"Kunzite",value:0.10,rarity:15},
-{name:"Morganite",value:0.10,rarity:15},
-{name:"Heliodor",value:0.10,rarity:15},
-{name:"Grossular",value:0.10,rarity:15},
-{name:"Ilmenite",value:0.10,rarity:15},
-{name:"Chromite",value:0.10,rarity:15},
-{name:"Cassiterite",value:0.10,rarity:15},
-{name:"Galena",value:0.10,rarity:15},
-{name:"Wulfenite",value:0.10,rarity:15},
-{name:"Scheelite",value:0.10,rarity:15},
-{name:"Smithsonite",value:0.10,rarity:15},
-{name:"Realgar",value:0.10,rarity:15},
-{name:"Orpiment",value:0.10,rarity:15},
-{name:"Stibnite",value:0.10,rarity:15},
-{name:"Molybdenite",value:0.10,rarity:15},
-{name:"Talc",value:0.10,rarity:15},
-{name:"Zircon",value:0.10,rarity:15},
+/* MYTHIC */
+one("mythic","Quantumium",3000,0.005);one("mythic","Neutronium",25000,0.0005);
+one("mythic","Omnidium",100000,0.0001);one("mythic","Godsteel",500000,0.00001);
+add("mythic",3000,0.005,"Californium, Einsteinium, Berkelium, Mendelevium, Nobelium, Lawrencium, ThoriumFine, Uranium, Plutonium, Neptunium, Protactinium, Tennessine, Oganesson, Flerovium, Livermorium, Dubnium, Seaborgium, Hassium, Meitnerium, Darmstadtium, TantalumRare, NiobiumRare, MeteoricDiamonds, PallasiteGem, GrapheneSample, LargeDiamondCrystal, BlueSapphireLegend, EmeraldLegend, UniqueJadeite, HistoricRedBeryl, MuseumGradeOpal, ExceptionalTaaffeite, ExceptionalMusgravite, ExceptionalBenitoite, ExceptionalPainite, ExceptionalPoudretteite, ExceptionalBixbite, MeteoritePendant, StellarAlloy, RareEarthBundle, IsotopeSample, AncientGoldArtifact, AncientSilverArtifact, AntiqueJade, MuseumDiamond, MuseumRuby");
 
-/* ---------- RARES (better than uncommon) ---------- */
-{name:"Gold",value:60.00,rarity:3},
-{name:"Platinum",value:90.00,rarity:2},
-{name:"Palladium",value:150.00,rarity:2.5},
-{name:"Iridium",value:200.00,rarity:1.3},
-{name:"Vibranium",value:40.00,rarity:1.2}, // "worst rare" (lowest-value rare but still above uncommon values)
+/* DIVINE */
+one("divine","Divinium",1000000,0.000005);one("divine","Aetherion",2500000,0.000002);
+add("divine",1000000,0.000005,"PinkStarDiamondSpecimen, BlueHopeSpecimen, TheHopeDiamond, TheCullinan, TheKoh-i-Noor, TheTiffanyYellow, TheDiamantine, BlueMoonDiamond, SunriseRuby, LegendaryAlexandrite, LegendaryTaaffeite, LegendaryMusgravite, LegendaryRedBeryl, LegendaryPinkDiamond, LegendaryBlueDiamond, MeteoricDiamantine, LunarMeteorite, MartianIron, AncientMeteoricGold, StarSapphire, LegendaryBlackOpal, LegendaryJadeite, UniqueGrapheneCrystal, PristineDiamondCrystal, MuseumGradeRuby, MuseumGradeEmerald, MuseumGradeSapphire, UltraRarePallasite, UltraRareSiderite, AncientStellarAlloy, StellarNugget, CelestiteRare, AntediluvianGold, AntediluvianSilver, LegendaryArtifactGold, LegendaryArtifactSilver, TransuranicSample, PristineMeteorFragment, AntiqueMeteoricDiamond, UltraPinkStar, UniqueBlueSpecimen, LegendarySpecimenRuby, LegendarySpecimenEmerald, LegendarySpecimenSapphire, WorldTreasureDiamond, UltimateGemstone");
 
-/* 50 real rare materials (precious metals, higher-value gems, rare ores) */
-{name:"Ruthenium",value:60.00,rarity:3},
-{name:"Rhenium",value:60.00,rarity:3},
-{name:"Osmium",value:60.00,rarity:3},
-{name:"Rhodium (Element)",value:60.00,rarity:3},
-{name:"Ruthenium (Element)",value:60.00,rarity:3},
-{name:"Tungstenite",value:60.00,rarity:3},
-{name:"Tellurium",value:60.00,rarity:3},
-{name:"Ruthenate",value:60.00,rarity:3},
-{name:"RutheniumOxide",value:60.00,rarity:3},
-{name:"ScandiumOxide",value:60.00,rarity:3},
-{name:"Emerald",value:60.00,rarity:3},
-{name:"Sapphire",value:60.00,rarity:3},
-{name:"Ruby",value:60.00,rarity:3},
-{name:"Alexandrite",value:60.00,rarity:3},
-{name:"Tsavorite",value:60.00,rarity:3},
-{name:"Demantoid",value:60.00,rarity:3},
-{name:"ImperialTopaz",value:60.00,rarity:3},
-{name:"FireOpal",value:60.00,rarity:3},
-{name:"Cat's Eye",value:60.00,rarity:3},
-{name:"Labradorite",value:60.00,rarity:3},
-{name:"Zircon (Gem)",value:60.00,rarity:3},
-{name:"Spinel (Gem)",value:60.00,rarity:3},
-{name:"Paraiba Tourmaline",value:60.00,rarity:3},
-{name:"PinkTourmaline",value:60.00,rarity:3},
-{name:"TsavoriteGarnet",value:60.00,rarity:3},
-{name:"RedBeryl",value:60.00,rarity:3},
-{name:"Benitoite",value:60.00,rarity:3},
-{name:"Jeremejevite",value:60.00,rarity:3},
-{name:"Grandidierite",value:60.00,rarity:3},
-{name:"Painite",value:60.00,rarity:3},
-{name:"Musgravite",value:60.00,rarity:3},
-{name:"Taaffeite",value:60.00,rarity:3},
-{name:"BlackOpal",value:60.00,rarity:3},
-{name:"Jadeite",value:60.00,rarity:3},
-{name:"SpinelRare",value:60.00,rarity:3},
-{name:"Adularia",value:60.00,rarity:3},
-{name:"Serendibite",value:60.00,rarity:3},
-{name:"Poudretteite",value:60.00,rarity:3},
-{name:"Bixbite",value:60.00,rarity:3},
-{name:"Pietersite",value:60.00,rarity:3},
-{name:"Kornerupine",value:60.00,rarity:3},
-{name:"Anatase",value:60.00,rarity:3},
-{name:"Triphane",value:60.00,rarity:3},
-{name:"Europium",value:60.00,rarity:3},
-{name:"Hafnium",value:60.00,rarity:3},
-{name:"Niobium (Element)",value:60.00,rarity:3},
-{name:"Tantalum (Element)",value:60.00,rarity:3},
+/* CELESTIAL (top tier: rarer and more valuable than Godly) */
+one("celestial","Celestialium",20000000000,0.000000001);
+add("celestial",5000000000,0.000000003,"Nebula Ore, Starfall Quartz, Zenith Crystal, Eclipse Ore, Cosmic Opal, Nova Gem, Auroral Rock");
 
-/* ---------- EPICS (better than rare) ---------- */
-{name:"Adamantium",value:500.00,rarity:0.5},
-{name:"Mithril",value:450.00,rarity:0.3},
-{name:"Orichalcum",value:900.00,rarity:0.15},
-{name:"Titanium",value:300.00,rarity:0.25},
-{name:"Tungsten",value:350.00,rarity:0.2},
+/* GODLY */
+one("godly","Aurelium",100000000,0.00000001);one("godly","SolarisCore",250000000,0.000000009);
+one("godly","VoidCrystal",750000000,0.000000008);one("godly","EterniumShard",500000000,0.000000007);
+one("godly","OmniGem",1000000000,0.000000006);
 
-/* 50 real epic materials (very valuable gemstones, rare metals, exotic minerals) */
-{name:"Diamond",value:500.00,rarity:0.5},
-{name:"BlueDiamond",value:500.00,rarity:0.5},
-{name:"PinkDiamond",value:500.00,rarity:0.5},
-{name:"GolcondaDiamond",value:500.00,rarity:0.5},
-{name:"Carbonado",value:500.00,rarity:0.5},
-{name:"Jade",value:500.00,rarity:0.5},
-{name:"ImperialJade",value:500.00,rarity:0.5},
-{name:"AlexandriteFine",value:500.00,rarity:0.5},
-{name:"Paraiba",value:500.00,rarity:0.5},
-{name:"PainiteFine",value:500.00,rarity:0.5},
-{name:"RedBerylFine",value:500.00,rarity:0.5},
-{name:"MusgraviteFine",value:500.00,rarity:0.5},
-{name:"TaaffeiteFine",value:500.00,rarity:0.5},
-{name:"BenitoiteFine",value:500.00,rarity:0.5},
-{name:"BlackOpalFine",value:500.00,rarity:0.5},
-{name:"GrandidieriteFine",value:500.00,rarity:0.5},
-{name:"JeremejeviteFine",value:500.00,rarity:0.5},
-{name:"PoudretteiteFine",value:500.00,rarity:0.5},
-{name:"BixbiteFine",value:500.00,rarity:0.5},
-{name:"PlatinumGroup",value:500.00,rarity:0.5},
-{name:"IridiumFine",value:500.00,rarity:0.5},
-{name:"OsmiumFine",value:500.00,rarity:0.5},
-{name:"RheniumFine",value:500.00,rarity:0.5},
-{name:"HafniumFine",value:500.00,rarity:0.5},
-{name:"ScandiumFine",value:500.00,rarity:0.5},
-{name:"GalliumArsenide",value:500.00,rarity:0.5},
-{name:"IndiumTinOxide",value:500.00,rarity:0.5},
-{name:"Neodymium",value:500.00,rarity:0.5},
-{name:"Praseodymium",value:500.00,rarity:0.5},
-{name:"Dysprosium",value:500.00,rarity:0.5},
-{name:"Terbium",value:500.00,rarity:0.5},
-{name:"EuropiumFine",value:500.00,rarity:0.5},
-{name:"Yttrium",value:500.00,rarity:0.5},
-{name:"Gadolinium",value:500.00,rarity:0.5},
-{name:"Promethium",value:500.00,rarity:0.5},
-{name:"Samarium",value:500.00,rarity:0.5},
-{name:"Holmium",value:500.00,rarity:0.5},
-{name:"Erbium",value:500.00,rarity:0.5},
-{name:"Thulium",value:500.00,rarity:0.5},
-{name:"Lutetium",value:500.00,rarity:0.5},
-{name:"RutheniumFine",value:500.00,rarity:0.5},
-{name:"PalladiumFine",value:500.00,rarity:0.5},
-{name:"SapphireFine",value:500.00,rarity:0.5},
-{name:"EmeraldFine",value:500.00,rarity:0.5},
-{name:"RubyFine",value:500.00,rarity:0.5},
-{name:"SpinelFine",value:500.00,rarity:0.5},
+/* ADMIN */
+metals.push({name:"Philosopher's Stone",value:1e15,rarity:0,tier:"admin"});
 
-/* ---------- LEGENDARY (better than epic) ---------- */
-{name:"Celestium",value:1500.00,rarity:0.02},
-{name:"Skyforged",value:5000.00,rarity:0.08},
-{name:"Stellarium",value:20000.00,rarity:0.03},
+const DICE_PRICE={common:5000,uncommon:25000,rare:100000,epic:750000,legendary:5000000,mythic:50000000,divine:1000000000,godly:50000000000,celestial:200000000000};
 
-/* 50 real legendary materials (extremely rare gemstones, historical prized materials) */
-{name:"HopeDiamond",value:1500.00,rarity:0.02},
-{name:"CullinanDiamond",value:1500.00,rarity:0.02},
-{name:"PinkStar",value:1500.00,rarity:0.02},
-{name:"OrangeDiamond",value:1500.00,rarity:0.02},
-{name:"BlueDiamondFine",value:1500.00,rarity:0.02},
-{name:"SerendibiteFine",value:1500.00,rarity:0.02},
-{name:"JadeiteImperial",value:1500.00,rarity:0.02},
-{name:"TaaffeiteLegend",value:1500.00,rarity:0.02},
-{name:"PainiteLegend",value:1500.00,rarity:0.02},
-{name:"RedDiamond",value:1500.00,rarity:0.02},
-{name:"PinkDiamondFine",value:1500.00,rarity:0.02},
-{name:"ParaibaFine",value:1500.00,rarity:0.02},
-{name:"AlexandriteLegend",value:1500.00,rarity:0.02},
-{name:"BlackOpalLegend",value:1500.00,rarity:0.02},
-{name:"TaaffeitePrime",value:1500.00,rarity:0.02},
-{name:"MusgraviteLegend",value:1500.00,rarity:0.02},
-{name:"BenitoiteLegend",value:1500.00,rarity:0.02},
-{name:"RedBerylLegend",value:1500.00,rarity:0.02},
-{name:"JeremejeviteLegend",value:1500.00,rarity:0.02},
-{name:"PoudretteiteLegend",value:1500.00,rarity:0.02},
-{name:"KunziteLegend",value:1500.00,rarity:0.02},
-{name:"ImperialTopazLegend",value:1500.00,rarity:0.02},
-{name:"GrandidieriteLegend",value:1500.00,rarity:0.02},
-{name:"BixbiteLegend",value:1500.00,rarity:0.02},
-{name:"PietersiteLegend",value:1500.00,rarity:0.02},
-{name:"KornerupineLegend",value:1500.00,rarity:0.02},
-{name:"MeteoricIron",value:1500.00,rarity:0.02},
-{name:"Pallasite",value:1500.00,rarity:0.02},
-{name:"SideriteFine",value:1500.00,rarity:0.02},
-{name:"IronMeteoroid",value:1500.00,rarity:0.02},
-{name:"Gibeon",value:1500.00,rarity:0.02},
-{name:"Seymchan",value:1500.00,rarity:0.02},
-{name:"CampoDelCielo",value:1500.00,rarity:0.02},
-{name:"Muonionalusta",value:1500.00,rarity:0.02},
-{name:"FossilAmberRare",value:1500.00,rarity:0.02},
-{name:"MeteoriticPallasite",value:1500.00,rarity:0.02},
-{name:"MeteoriticSiderite",value:1500.00,rarity:0.02},
-{name:"MeteoriticIron",value:1500.00,rarity:0.02},
-{name:"GoldNugget",value:1500.00,rarity:0.02},
-{name:"PlatinumNugget",value:1500.00,rarity:0.02},
-{name:"ElectrumHistoric",value:1500.00,rarity:0.02},
-{name:"MeteoritePallasite",value:1500.00,rarity:0.02},
-{name:"PetrifiedIvory",value:1500.00,rarity:0.02},
-{name:"AntiqueBronze",value:1500.00,rarity:0.02},
-{name:"HistoricSilver",value:1500.00,rarity:0.02},
-{name:"HistoricGold",value:1500.00,rarity:0.02},
-{name:"AncientMeteoricIron",value:1500.00,rarity:0.02},
-{name:"Aurichalcum",value:1500.00,rarity:0.02},
+/* Potions are data: add an entry here and the shop, inventory and effects pick it up.
+   effects = buff keys switched on for BUFF_MS (2 min). */
+const POTIONS=[
+  {id:"luck",name:"Luck Potion",price:40000,color:"#63ff8a",effects:["luck"],desc:"Every roll is made twice and the rarer metal is kept. Mine odds also shift toward rarer ore."},
+  {id:"coin",name:"Coin Potion",price:25000,color:"#ffd84d",effects:["coin"],desc:"Double income per second."},
+  {id:"patrick",name:"Patrick's Potion",price:150000,color:"#3ddc84",effects:["luck","coin"],desc:"A mix of Luck and Coin. Both effects at once."},
+  {id:"swift",name:"Swift Potion",price:60000,color:"#4da6ff",effects:["swift"],desc:"Walk about 60% faster in the mine."},
+  {id:"ward",name:"Fireward Potion",price:90000,color:"#ff7a3d",effects:["ward"],desc:"Lava still pushes you back, but it cannot burn your bag."},
+  {id:"eye",name:"Miner's Eye Potion",price:120000,color:"#c46bff",effects:["eye"],desc:"Spot ore from further away and see veins in the dark."}
+];
 
-/* ---------- MYTHIC (very rare, better than legendary) ---------- */
-{name:"Quantumium",value:3000.00,rarity:0.005},
-{name:"Neutronium",value:25000.00,rarity:0.0005},
-{name:"Omnidium",value:100000.00,rarity:0.0001},
-{name:"Godsteel",value:500000.00,rarity:0.00001}, // edge of mythic threshold
+/* ================= STATE ================= */
+const $=id=>document.getElementById(id);
+const SAVE_KEY="metalRollSave_v3";
+const MAX_INV=100, MAX_FIELD=10, MAX_BAG=25, MAX_TICKETS=99, BUFF_MS=120000, TICKET_EVERY=30000;
+const LEGEND_IDX=TIERS.indexOf("legendary");
+const byName=new Map(metals.map(m=>[m.name,m]));
+const potById=Object.fromEntries(POTIONS.map(p=>[p.id,p]));
+const fmt=n=>Number(n).toLocaleString(undefined,{maximumFractionDigits:2});
+const cap=s=>s[0].toUpperCase()+s.slice(1);
+const rnd=(a,b)=>a+Math.random()*(b-a);
 
-/* 50 real mythic/extremely rare materials (transuranics, very rare gems and isotopes) */
-{name:"Californium",value:3000.00,rarity:0.005},
-{name:"Einsteinium",value:3000.00,rarity:0.005},
-{name:"Berkelium",value:3000.00,rarity:0.005},
-{name:"Mendelevium",value:3000.00,rarity:0.005},
-{name:"Nobelium",value:3000.00,rarity:0.005},
-{name:"Lawrencium",value:3000.00,rarity:0.005},
-{name:"ThoriumFine",value:3000.00,rarity:0.005},
-{name:"Uranium",value:3000.00,rarity:0.005},
-{name:"Plutonium",value:3000.00,rarity:0.005},
-{name:"Neptunium",value:3000.00,rarity:0.005},
-{name:"Protactinium",value:3000.00,rarity:0.005},
-{name:"Tennessine",value:3000.00,rarity:0.005},
-{name:"Oganesson",value:3000.00,rarity:0.005},
-{name:"Flerovium",value:3000.00,rarity:0.005},
-{name:"Livermorium",value:3000.00,rarity:0.005},
-{name:"Dubnium",value:3000.00,rarity:0.005},
-{name:"Seaborgium",value:3000.00,rarity:0.005},
-{name:"Hassium",value:3000.00,rarity:0.005},
-{name:"Meitnerium",value:3000.00,rarity:0.005},
-{name:"Darmstadtium",value:3000.00,rarity:0.005},
-{name:"TantalumRare",value:3000.00,rarity:0.005},
-{name:"NiobiumRare",value:3000.00,rarity:0.005},
-{name:"MeteoricDiamonds",value:3000.00,rarity:0.005},
-{name:"PallasiteGem",value:3000.00,rarity:0.005},
-{name:"GrapheneSample",value:3000.00,rarity:0.005},
-{name:"LargeDiamondCrystal",value:3000.00,rarity:0.005},
-{name:"BlueSapphireLegend",value:3000.00,rarity:0.005},
-{name:"EmeraldLegend",value:3000.00,rarity:0.005},
-{name:"UniqueJadeite",value:3000.00,rarity:0.005},
-{name:"HistoricRedBeryl",value:3000.00,rarity:0.005},
-{name:"MuseumGradeOpal",value:3000.00,rarity:0.005},
-{name:"ExceptionalTaaffeite",value:3000.00,rarity:0.005},
-{name:"ExceptionalMusgravite",value:3000.00,rarity:0.005},
-{name:"ExceptionalBenitoite",value:3000.00,rarity:0.005},
-{name:"ExceptionalPainite",value:3000.00,rarity:0.005},
-{name:"ExceptionalPoudretteite",value:3000.00,rarity:0.005},
-{name:"ExceptionalBixbite",value:3000.00,rarity:0.005},
-{name:"MeteoritePendant",value:3000.00,rarity:0.005},
-{name:"StellarAlloy",value:3000.00,rarity:0.005},
-{name:"RareEarthBundle",value:3000.00,rarity:0.005},
-{name:"IsotopeSample",value:3000.00,rarity:0.005},
-{name:"AncientGoldArtifact",value:3000.00,rarity:0.005},
-{name:"AncientSilverArtifact",value:3000.00,rarity:0.005},
-{name:"AntiqueJade",value:3000.00,rarity:0.005},
-{name:"MuseumDiamond",value:3000.00,rarity:0.005},
-{name:"MuseumRuby",value:3000.00,rarity:0.005},
+let money=0, inventory=[], field=[], bag=[], incomePerSecond=0;
+let dice={}, potions={}, buffs={}, redeemed=[], equippedDice=null;
+let tickets=5, ticketAt=Date.now(), mineUnlocked=false;
+let qty=1, shopView="dice", potionsOpen=false;
+TIERS.forEach(t=>dice[t]=0);
+POTIONS.forEach(p=>potions[p.id]=0);
 
-/* ---------- DIVINE (near-impossible drops, top tier) ---------- */
-{name:"Divinium",value:1000000.00,rarity:0.000005},
-{name:"Aetherion",value:2500000.00,rarity:0.000002},
-{name:"Celestialium",value:50000000.00,rarity:0.0000005},
+let toastTimer=null;
+function msg(t,ms=3000){
+  const el=$("msg");
+  el.textContent=t; el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>el.classList.remove("show"),ms);
+}
+function active(k){return Date.now()<(buffs[k]||0);}
+function secsLeft(k){return Math.max(0,Math.ceil(((buffs[k]||0)-Date.now())/1000));}
+function incomeMult(){return active("coin")?2:1;}
+function recalcIncome(){incomePerSecond=field.reduce((s,m)=>s+m.value,0);}
 
-/* 50 divine-tier real/legendary materials and unique specimens */
-{name:"PinkStarDiamondSpecimen",value:1000000.00,rarity:0.000005},
-{name:"BlueHopeSpecimen",value:1000000.00,rarity:0.000005},
-{name:"TheHopeDiamond",value:1000000.00,rarity:0.000005},
-{name:"TheCullinan",value:1000000.00,rarity:0.000005},
-{name:"TheKoh-i-Noor",value:1000000.00,rarity:0.000005},
-{name:"TheTiffanyYellow",value:1000000.00,rarity:0.000005},
-{name:"TheDiamantine",value:1000000.00,rarity:0.000005},
-{name:"BlueMoonDiamond",value:1000000.00,rarity:0.000005},
-{name:"SunriseRuby",value:1000000.00,rarity:0.000005},
-{name:"LegendaryAlexandrite",value:1000000.00,rarity:0.000005},
-{name:"LegendaryTaaffeite",value:1000000.00,rarity:0.000005},
-{name:"LegendaryMusgravite",value:1000000.00,rarity:0.000005},
-{name:"LegendaryRedBeryl",value:1000000.00,rarity:0.000005},
-{name:"LegendaryPinkDiamond",value:1000000.00,rarity:0.000005},
-{name:"LegendaryBlueDiamond",value:1000000.00,rarity:0.000005},
-{name:"MeteoricDiamantine",value:1000000.00,rarity:0.000005},
-{name:"LunarMeteorite",value:1000000.00,rarity:0.000005},
-{name:"MartianIron",value:1000000.00,rarity:0.000005},
-{name:"AncientMeteoricGold",value:1000000.00,rarity:0.000005},
-{name:"StarSapphire",value:1000000.00,rarity:0.000005},
-{name:"LegendaryBlackOpal",value:1000000.00,rarity:0.000005},
-{name:"LegendaryJadeite",value:1000000.00,rarity:0.000005},
-{name:"UniqueGrapheneCrystal",value:1000000.00,rarity:0.000005},
-{name:"PristineDiamondCrystal",value:1000000.00,rarity:0.000005},
-{name:"MuseumGradeRuby",value:1000000.00,rarity:0.000005},
-{name:"MuseumGradeEmerald",value:1000000.00,rarity:0.000005},
-{name:"MuseumGradeSapphire",value:1000000.00,rarity:0.000005},
-{name:"UltraRarePallasite",value:1000000.00,rarity:0.000005},
-{name:"UltraRareSiderite",value:1000000.00,rarity:0.000005},
-{name:"AncientStellarAlloy",value:1000000.00,rarity:0.000005},
-{name:"StellarNugget",value:1000000.00,rarity:0.000005},
-{name:"CelestiteRare",value:1000000.00,rarity:0.000005},
-{name:"AntediluvianGold",value:1000000.00,rarity:0.000005},
-{name:"AntediluvianSilver",value:1000000.00,rarity:0.000005},
-{name:"LegendaryArtifactGold",value:1000000.00,rarity:0.000005},
-{name:"LegendaryArtifactSilver",value:1000000.00,rarity:0.000005},
-{name:"TransuranicSample",value:1000000.00,rarity:0.000005},
-{name:"PristineMeteorFragment",value:1000000.00,rarity:0.000005},
-{name:"AntiqueMeteoricDiamond",value:1000000.00,rarity:0.000005},
-{name:"UltraPinkStar",value:1000000.00,rarity:0.000005},
-{name:"UniqueBlueSpecimen",value:1000000.00,rarity:0.000005},
-{name:"LegendarySpecimenRuby",value:1000000.00,rarity:0.000005},
-{name:"LegendarySpecimenEmerald",value:1000000.00,rarity:0.000005},
-{name:"LegendarySpecimenSapphire",value:1000000.00,rarity:0.000005},
-{name:"WorldTreasureDiamond",value:1000000.00,rarity:0.000005},
-{name:"UltimateGemstone",value:1000000.00,rarity:0.000005},
-
-/* ---------- GODLY (new tier — better than divine) ----------
-   Extremely rare, glowing yellow */
-{name:"Aurelium",value:100000000.00,rarity:0.00000001},
-{name:"SolarisCore",value:250000000.00,rarity:0.000000009},
-{name:"VoidCrystal",value:750000000.00,rarity:0.000000008},
-{name:"EterniumShard",value:500000000.00,rarity:0.000000007},
-{name:"OmniGem",value:1000000000.00,rarity:0.000000006},
-
-/* ---------- ADMIN / SPECIAL ---------- */
-{name:"Philosopher's Stone",value:1e15,rarity:0}
-
-]
-
-function getRarityTier(m){
-
-  if(m.name==="Philosopher's Stone") return "admin"
-
-  // thresholds: higher rarity number = more common
-  if(m.rarity >= 20) return "common"
-  if(m.rarity >= 5) return "uncommon"
-  if(m.rarity >= 1) return "rare"
-  if(m.rarity >= 0.1) return "epic"
-  if(m.rarity >= 0.01) return "legendary"
-  if(m.rarity >= 0.00001) return "mythic"
-  if(m.rarity >= 0.0000001) return "divine"  // divine sits below mythic
-  // anything rarer than divine is "godly"
-  return "godly"
+/* ================= TICKETS ================= */
+function grantTickets(n){
+  tickets=Math.min(MAX_TICKETS,tickets+n);
+  if(tickets>=MAX_TICKETS) ticketAt=Date.now();
+}
+function spendTicket(){
+  if(tickets<=0){msg("No tickets. Mine ore, enter the mine, or wait for one to refill.");return false;}
+  if(tickets===MAX_TICKETS) ticketAt=Date.now();
+  tickets--;
+  return true;
+}
+function tickTickets(){
+  if(tickets<MAX_TICKETS && Date.now()-ticketAt>=TICKET_EVERY){
+    tickets++; ticketAt=Date.now();
+  }
 }
 
+/* ================= ROLLS (shared with the mine) ================= */
 function weightedRoll(){
-
-  let total = metals.reduce((sum,m) => sum + m.rarity, 0)
-  let rand = Math.random() * total
-  let running = 0
-
-  for(let m of metals){
-    running += m.rarity
-    if(rand <= running) return m
-  }
-
-  // fallback: return the last item
-  return metals[metals.length - 1]
+  const total=metals.reduce((s,m)=>s+m.rarity,0);
+  let r=Math.random()*total;
+  for(const m of metals){ r-=m.rarity; if(r<=0 && m.rarity>0) return m; }
+  return metals[0];
+}
+function luckRoll(){
+  const a=weightedRoll();
+  if(!active("luck")) return a;
+  const b=weightedRoll();
+  return a.rarity<=b.rarity?a:b; /* keep the rarer one */
 }
 
-function buyDice(type,cost){
-  if(money < cost) return
-  money -= cost
-  diceInventory[type]++
-  updateDiceUI()
-  updateUI()
-}
-
-function updateDiceUI(){
-  let div = document.getElementById("diceInventory")
-  div.innerHTML = ""
-  for(let type in diceInventory){
-    let btn = document.createElement("button")
-    btn.className = type
-    btn.innerHTML = type + " (" + diceInventory[type] + ")"
-    btn.onclick = function(){
-      if(diceInventory[type] <= 0) return
-      activeDice = type
-      diceInventory[type]--
-      updateDiceUI()
-    }
-    div.appendChild(btn)
+/* Every metal that enters your inventory goes through here (rolls and mining alike). */
+function acquire(m){
+  inventory.push(m);
+  if(!mineUnlocked && TIERS.indexOf(m.tier)>=LEGEND_IDX){
+    mineUnlocked=true;
+    msg(`Mine unlocked! You rolled a ${m.tier} metal.`,5000);
+    updateTabs();
   }
 }
+function showRoll(m,source){
+  $("result").innerHTML=
+    `<div class="sub">${source}</div><span class="${m.tier}"><b>${m.name}</b></span> <span class="hint">${cap(m.tier)} · $${fmt(m.value)}/sec</span>`;
+}
 
-function redeemCode(){
-  let code = document.getElementById("codeInput").value.toLowerCase()
-
-  if(code === "voldemort"){
-    let stone = metals.find(m => m.name === "Philosopher's Stone")
-    inventory.push(stone)
-    document.getElementById("result").innerHTML =
-      `SECRET: <span class="admin">Philosopher's Stone</span> (1qa/sec)`
-    render()
-    updateUI()
-  } else if(code === "whoisrickastley"){
-    diceInventory.legendary++
-    diceInventory.mythic++
-    document.getElementById("result").innerHTML =
-      `CODE REDEEMED: <span class="legendary">Legendary Dice</span> + <span class="mythic">Mythic Dice</span>`
-    updateDiceUI()
+function rollMetal(){
+  if(inventory.length>=MAX_INV){msg("Inventory full!");return;}
+  if(!spendTicket()) return;
+  let m, source;
+  if(equippedDice){
+    const t=equippedDice;
+    const pool=metals.filter(x=>x.tier===t);
+    m=pool[Math.floor(Math.random()*pool.length)];
+    dice[t]--; equippedDice=null;
+    source=`Rolled with ${cap(t)} dice`;
+  } else {
+    m=luckRoll();
+    source="Surface roll";
   }
+  acquire(m);
+  showRoll(m,source);
+  render(); updateUI(); renderDiceAndPotions();
 }
 
-function updateUI(){
-  document.getElementById("money").textContent = money.toFixed(2)
-  document.getElementById("income").textContent = incomePerSecond.toFixed(2)
-  document.querySelector("h2:nth-of-type(3)").textContent =
-    `Inventory (${inventory.length}/100)`
-  document.querySelector("h2:nth-of-type(4)").textContent =
-    `Field (${field.length}/10)`
-}
-
-function render(){
-  let invDiv = document.getElementById("inventory")
-  invDiv.innerHTML = ""
-  inventory.forEach((m,i) => {
-    let tier = getRarityTier(m)
-    let div = document.createElement("div")
-    div.className = "metalCard"
-    div.innerHTML = `<span class="${tier}">${m.name}</span> ($${m.value}/sec)
-      <br>
-      <button onclick="addToField(${i})">Field</button>
-      <button onclick="trashMetal(${i})">Trash</button>`
-    invDiv.appendChild(div)
-  })
-
-  let fieldDiv = document.getElementById("field")
-  fieldDiv.innerHTML = ""
-  field.forEach((m,i) => {
-    let tier = getRarityTier(m)
-    let div = document.createElement("div")
-    div.className = "metalCard"
-    div.innerHTML = `<span class="${tier}">${m.name}</span> ($${m.value}/sec)
-      <br>
-      <button onclick="removeFromField(${i})">Remove</button>`
-    fieldDiv.appendChild(div)
-  })
+function toggleDice(t){
+  if(equippedDice===t) equippedDice=null;
+  else if(dice[t]>0) equippedDice=t;
+  else msg(`You have no ${t} dice.`);
+  renderDiceAndPotions();
 }
 
 function addToField(i){
-  if(field.length >= 10) return
-  let m = inventory.splice(i,1)[0]
-  field.push(m)
-  incomePerSecond += m.value
-  render()
-  updateUI()
+  if(field.length>=MAX_FIELD){msg("Field is full (10/10).");return;}
+  field.push(inventory.splice(i,1)[0]);
+  recalcIncome(); render(); updateUI();
 }
-
 function removeFromField(i){
-  if(inventory.length >= 100) return
-  let m = field.splice(i,1)[0]
-  inventory.push(m)
-  incomePerSecond -= m.value
-  render()
-  updateUI()
+  if(inventory.length>=MAX_INV){msg("Inventory is full.");return;}
+  inventory.push(field.splice(i,1)[0]);
+  recalcIncome(); render(); updateUI();
 }
-
 function trashMetal(i){
-  inventory.splice(i,1)
-  render()
-  updateUI()
+  inventory.splice(i,1);
+  render(); updateUI();
 }
 
-document.getElementById("rollBtn").onclick = function(){
-  if(inventory.length >= 100) return
+/* ================= SHOPS ================= */
+function buyN(price,n,apply,label){
+  const total=price*n;
+  if(money<total){msg(`Not enough money for ${label} x${n} ($${fmt(total)}).`);return false;}
+  money-=total;
+  for(let i=0;i<n;i++) apply();
+  msg(`Bought ${label} x${n}.`);
+  updateUI(); renderShop(); renderDiceAndPotions();
+  return true;
+}
+function buyDice(t){ buyN(DICE_PRICE[t],qty,()=>dice[t]++,`${cap(t)} dice`); }
+function buyPotion(id){ buyN(potById[id].price,qty,()=>potions[id]++,potById[id].name); }
+function drinkPotion(id){
+  if(!potions[id]) return;
+  potions[id]--;
+  const now=Date.now();
+  for(const e of potById[id].effects) buffs[e]=Math.max(now,buffs[e]||0)+BUFF_MS;
+  msg(`Drank ${potById[id].name}! 2 minutes.`);
+  updateUI(); renderDiceAndPotions();
+}
 
-  let metal
-  if(activeDice){
-    let filtered = metals.filter(m => getRarityTier(m) === activeDice)
-    if(filtered.length === 0){
-      metal = weightedRoll()
-    } else {
-      metal = filtered[Math.floor(Math.random() * filtered.length)]
-    }
-    activeDice = null
+function redeemCode(){
+  const code=$("codeInput").value.trim().toLowerCase();
+  if(code!=="voldemort" && code!=="whoisrickastley"){msg("Unknown code.");return;}
+  if(redeemed.includes(code)){msg("That code was already redeemed.");return;}
+  if(code==="voldemort"){
+    if(inventory.length>=MAX_INV){msg("Inventory full.");return;}
+    acquire(byName.get("Philosopher's Stone"));
+    showRoll(byName.get("Philosopher's Stone"),"Secret code");
   } else {
-    metal = weightedRoll()
+    dice.legendary++; dice.mythic++;
+    $("result").innerHTML=`<div class="sub">Secret code</div><span class="legendary">Legendary dice</span> + <span class="mythic">Mythic dice</span>`;
   }
-
-  inventory.push(metal)
-  let tier = getRarityTier(metal)
-  document.getElementById("result").innerHTML =
-    `You rolled: <span class="${tier}"><b>${metal.name}</b></span> ($${metal.value}/sec)`
-  render()
-  updateUI()
+  redeemed.push(code);
+  $("codeInput").value="";
+  render(); updateUI(); renderDiceAndPotions();
 }
 
-/* ========== Local storage save/load/clear ========== */
+/* ================= RENDER ================= */
+function mkBtn(text,fn,cls){
+  const b=document.createElement("button");
+  b.className="btn"+(cls?" "+cls:"");
+  b.textContent=text; b.onclick=fn;
+  return b;
+}
+function metalCard(m,buttons){
+  const d=document.createElement("div"); d.className="metalCard";
+  const s=document.createElement("div"); s.className=m.tier; s.textContent=m.name;
+  const v=document.createElement("div"); v.className="val"; v.textContent=`${cap(m.tier)} · $${fmt(m.value)}/sec`;
+  const a=document.createElement("div"); a.className="acts";
+  buttons.forEach(b=>a.appendChild(b));
+  d.append(s,v,a);
+  return d;
+}
+function render(){
+  const inv=$("inventory"); inv.innerHTML="";
+  if(!inventory.length) inv.innerHTML='<div class="empty">Nothing yet. Roll or mine to fill this up.</div>';
+  inventory.forEach((m,i)=>inv.appendChild(metalCard(m,[
+    mkBtn("Field",()=>addToField(i)),
+    mkBtn("Trash",()=>trashMetal(i))
+  ])));
+  const fd=$("field"); fd.innerHTML="";
+  if(!field.length) fd.innerHTML='<div class="empty">Put metals here to earn income per second.</div>';
+  field.forEach((m,i)=>fd.appendChild(metalCard(m,[mkBtn("Remove",()=>removeFromField(i))])));
+}
+function updateUI(){
+  $("money").textContent="$"+fmt(money);
+  $("income").textContent="$"+fmt(incomePerSecond*incomeMult());
+  $("tickets").textContent=tickets+"/"+MAX_TICKETS;
+  const parts=[];
+  if(active("luck")) parts.push(`Luck ${secsLeft("luck")}s`);
+  if(active("coin")) parts.push(`Coin x2 ${secsLeft("coin")}s`);
+  for(const k of ["swift","ward","eye"]) if(active(k)) parts.push(`${cap(k)} ${secsLeft(k)}s`);
+  $("buffTxt").textContent=parts.length?parts.join(" · "):"none";
+  $("invTitle").textContent=`Inventory (${inventory.length}/${MAX_INV})`;
+  $("fieldTitle").textContent=`Field (${field.length}/${MAX_FIELD})`;
+  $("rollBtn").disabled=inventory.length>=MAX_INV||tickets<=0;
+}
+function updateTabs(){
+  const t=$("tabMine");
+  t.classList.toggle("locked",!mineUnlocked);
+  t.textContent=mineUnlocked?"Mine":"Mine (locked)";
+}
 
-const SAVE_KEY = 'metalRollSave_v1'
+function renderShop(){
+  $("shopDiceTab").classList.toggle("on",shopView==="dice");
+  $("shopPotTab").classList.toggle("on",shopView==="potions");
+  document.querySelectorAll(".qty [data-q]").forEach(b=>b.classList.toggle("on",Number(b.dataset.q)===qty));
+  const dv=$("shopDice"), pv=$("shopPotions"), tog=$("potToggle");
+  dv.classList.toggle("hidden",shopView!=="dice");
+  pv.classList.toggle("hidden",shopView!=="potions");
+  tog.classList.toggle("hidden",shopView!=="potions"||POTIONS.length<=3);
 
-function saveGame(){
-  const data = {
-    money: money,
-    inventory: inventory.map(m => m.name),
-    field: field.map(m => m.name),
-    diceInventory: {...diceInventory}
+  if(shopView==="dice" && !dv.children.length){
+    TIERS.forEach(t=>{
+      const card=document.createElement("div"); card.className="item";
+      card.innerHTML=`<div class="name ${t}">${cap(t)} dice</div><div class="price">$${fmt(DICE_PRICE[t])}</div><div class="own"></div>`;
+      const b=mkBtn("Buy",()=>buyDice(t)); card.appendChild(b);
+      card.dataset.tier=t;
+      dv.appendChild(card);
+    });
   }
-  try {
-    localStorage.setItem(SAVE_KEY, JSON.stringify(data))
-    document.getElementById("result").innerText = "Game saved."
-  } catch(e) {
-    console.error("Save failed", e)
-    document.getElementById("result").innerText = "Save failed (storage error)."
+  if(shopView==="dice"){
+    dv.querySelectorAll(".item").forEach(c=>{
+      const t=c.dataset.tier;
+      c.querySelector(".own").textContent=`Owned: ${dice[t]}`;
+      c.querySelector(".price").textContent="$"+fmt(DICE_PRICE[t]*qty)+(qty>1?` (x${qty})`:"");
+    });
+  }
+
+  if(shopView==="potions"){
+    pv.innerHTML="";
+    const list=potionsOpen?POTIONS:POTIONS.slice(0,3);
+    list.forEach(p=>{
+      const card=document.createElement("div"); card.className="item";
+      card.innerHTML=`<div class="name"><span class="swatch" style="background:${p.color}"></span>${p.name}</div>
+        <div class="price">$${fmt(p.price*qty)}${qty>1?` (x${qty})`:""}</div>
+        <div class="desc">${p.desc}</div><div class="own">Owned: ${potions[p.id]}</div>`;
+      card.appendChild(mkBtn("Buy",()=>buyPotion(p.id)));
+      pv.appendChild(card);
+    });
+    tog.textContent=potionsOpen?"Show fewer potions":`Show all ${POTIONS.length} potions`;
   }
 }
 
+function renderDiceAndPotions(){
+  const dv=$("diceInventory"); dv.innerHTML="";
+  TIERS.forEach(t=>{
+    const b=mkBtn(`${cap(t)} (${dice[t]})`,()=>toggleDice(t),t+(equippedDice===t?" on":""));
+    b.disabled=dice[t]<=0 && equippedDice!==t;
+    b.classList.add("chipbtn");
+    dv.appendChild(b);
+  });
+  $("equipTxt").textContent=equippedDice?`Equipped: ${cap(equippedDice)} dice. Used on your next roll. Click again to unequip.`:"";
+  const pv=$("potionInventory"); pv.innerHTML="";
+  POTIONS.forEach(p=>{
+    const b=mkBtn(`${p.name} (${potions[p.id]})`,()=>drinkPotion(p.id));
+    b.disabled=potions[p.id]<=0;
+    b.style.borderColor=p.color;
+    b.classList.add("chipbtn");
+    pv.appendChild(b);
+  });
+  renderShop();
+}
+
+/* ================= SAVE / LOAD / CLEAR ================= */
+function saveGame(silent){
+  const data={money,inventory:inventory.map(m=>m.name),field:field.map(m=>m.name),
+    dice,potions,buffs,redeemed,tickets,ticketAt,mineUnlocked};
+  try{
+    localStorage.setItem(SAVE_KEY,JSON.stringify(data));
+    if(!silent) msg("Game saved.");
+  }catch(e){
+    if(!silent) msg("Save failed (storage unavailable).");
+  }
+}
 function loadGame(){
-  const raw = localStorage.getItem(SAVE_KEY)
-  if(!raw) return false
-  try {
-    const data = JSON.parse(raw)
-    if(typeof data.money === 'number') money = data.money
-    inventory = Array.isArray(data.inventory) ? data.inventory.map(n => metals.find(m => m.name === n)).filter(Boolean) : []
-    field = Array.isArray(data.field) ? data.field.map(n => metals.find(m => m.name === n)).filter(Boolean) : []
-    if(typeof data.diceInventory === 'object' && data.diceInventory !== null){
-      for(let key in diceInventory){
-        diceInventory[key] = Number(data.diceInventory[key] || 0)
-      }
-    }
-    incomePerSecond = field.reduce((sum,m) => sum + (m?.value || 0), 0)
-    updateDiceUI()
-    render()
-    updateUI()
-    document.getElementById("result").innerText = "Saved game loaded."
-    return true
-  } catch(e) {
-    console.error("Load failed", e)
-    document.getElementById("result").innerText = "Load failed (corrupt save)."
-    return false
+  let raw=null;
+  try{ raw=localStorage.getItem(SAVE_KEY); }catch(e){ return; }
+  if(!raw) return;
+  try{
+    const d=JSON.parse(raw);
+    if(typeof d.money==="number") money=d.money;
+    const pick=arr=>Array.isArray(arr)?arr.map(n=>byName.get(n)).filter(Boolean):[];
+    inventory=pick(d.inventory);
+    field=pick(d.field);
+    TIERS.forEach(t=>{dice[t]=Number((d.dice||{})[t])||0;});
+    POTIONS.forEach(p=>{potions[p.id]=Number((d.potions||{})[p.id])||0;});
+    Object.keys(buffs).forEach(k=>delete buffs[k]);
+    Object.assign(buffs,d.buffs||{});
+    redeemed=Array.isArray(d.redeemed)?d.redeemed:[];
+    tickets=Math.min(MAX_TICKETS,Number(d.tickets)||5);
+    ticketAt=Number(d.ticketAt)||Date.now();
+    mineUnlocked=!!d.mineUnlocked;
+    recalcIncome();
+    msg("Saved game loaded.");
+  }catch(e){
+    msg("Load failed (corrupt save).");
   }
 }
-
+let clearArmed=false, clearTimer=null;
+function disarmClear(){clearArmed=false; $("clearBtn").textContent="Clear Data";}
 function clearGame(){
-  if(!confirm("Clear saved data and reset the game? This cannot be undone.")) return
-  try {
-    localStorage.removeItem(SAVE_KEY)
-  } catch(e){
-    console.error("Clear failed", e)
+  /* confirm() is blocked in the viewer, so the reset needs a second click */
+  if(!clearArmed){
+    clearArmed=true;
+    $("clearBtn").textContent="Click again to confirm";
+    clearTimeout(clearTimer);
+    clearTimer=setTimeout(disarmClear,4000);
+    return;
   }
-  money = 0
-  inventory = []
-  field = []
-  for(let k in diceInventory) diceInventory[k] = 0
-  incomePerSecond = 0
-  activeDice = null
-  updateDiceUI()
-  render()
-  updateUI()
-  document.getElementById("result").innerText = "Saved data cleared and game reset."
+  disarmClear();
+  try{ localStorage.removeItem(SAVE_KEY); }catch(e){}
+  money=0; inventory=[]; field=[]; bag=[];
+  TIERS.forEach(t=>{dice[t]=0;});
+  POTIONS.forEach(p=>{potions[p.id]=0;});
+  Object.keys(buffs).forEach(k=>delete buffs[k]);
+  redeemed=[]; equippedDice=null;
+  tickets=5; ticketAt=Date.now(); mineUnlocked=false;
+  recalcIncome(); render(); updateUI(); updateTabs(); renderDiceAndPotions();
+  $("result").textContent="Roll to find your first metal.";
+  msg("Saved data cleared and game reset.");
 }
 
-/* Hook up buttons */
+/* ================= DEVICE SUPPORT ================= */
+const IS_TOUCH=(window.matchMedia&&matchMedia("(pointer:coarse)").matches)||(navigator.maxTouchPoints||0)>0;
+const touchIn={f:0,s:0};   /* walking input from the on-screen joystick, -1..1 */
 
-document.getElementById("saveBtn").addEventListener("click", saveGame)
-document.getElementById("clearBtn").addEventListener("click", clearGame)
+function applyDeviceClasses(){
+  const root=document.documentElement;
+  root.classList.toggle("touch",IS_TOUCH);
+  root.classList.toggle("compact",window.innerWidth<760);
+}
+applyDeviceClasses();
+window.addEventListener("resize",applyDeviceClasses);
 
-/* Auto-load saved game on startup if available */
-window.addEventListener("DOMContentLoaded", ()=>{
-  loadGame()
-})
+/* On-screen joystick (bottom left) and mine button (bottom right) inside the mine view */
+(function wireMineTouch(){
+  const joy=$("joy"), knob=$("joyKnob"), act=$("mineAction");
+  if(joy){
+    let id=null, cx=0, cy=0, R=50;
+    const set=(dx,dy)=>{
+      const len=Math.hypot(dx,dy), k=len>R?R/len:1;
+      const x=dx*k, y=dy*k;
+      knob.style.transform=`translate(${x}px,${y}px)`;
+      touchIn.s=x/R; touchIn.f=-y/R;
+    };
+    joy.addEventListener("pointerdown",e=>{
+      id=e.pointerId;
+      joy.setPointerCapture(id);
+      const r=joy.getBoundingClientRect();
+      cx=r.left+r.width/2; cy=r.top+r.height/2; R=r.width/2-18;
+      set(e.clientX-cx,e.clientY-cy);
+      e.preventDefault();
+    });
+    joy.addEventListener("pointermove",e=>{ if(e.pointerId===id) set(e.clientX-cx,e.clientY-cy); });
+    const end=e=>{
+      if(e.pointerId!==id) return;
+      id=null; touchIn.s=0; touchIn.f=0;
+      knob.style.transform="translate(0,0)";
+    };
+    joy.addEventListener("pointerup",end);
+    joy.addEventListener("pointercancel",end);
+  }
+  if(act){
+    act.addEventListener("pointerdown",e=>{
+      e.preventDefault();
+      if(mineState) mineState.pressE=true;
+    });
+  }
+})();
 
-/* ========== End local storage section ========== */
+/* ================= MINE (three.js) ================= */
+let mineOn=false, mineState=null;
+const CHUNK=20, CHUNKS=60, MINE_LEN=CHUNK*CHUNKS, MINE_W=6.5;
+const LANE=1.4;          /* centre lane: rails and the walking route, kept free of lava and rock */
+const ENTRY_Z=4;
+const TIER_COLOR={common:0xbfbfbf,uncommon:0x63ff8a,rare:0x4da6ff,epic:0xc46bff,legendary:0xffd84d,mythic:0xb040ff,divine:0xffa500,godly:0xfff176,celestial:0x7fe7ff};
+const keys={};
+let s_lanterns=[];
 
+/* Odds shift toward rarer tiers with depth. Within a tier, each metal is equally likely. */
+function mineWeights(level){
+  let c=Math.min(8,(level-1)*0.3);
+  if(active("luck")) c=Math.min(8,c+1.5);
+  return TIERS.map((_,t)=>Math.exp(-((t-c)*(t-c))/1.2));
+}
+function pickMineMetal(level){
+  const w=mineWeights(level);
+  const tot=w.reduce((a,b)=>a+b,0);
+  let r=Math.random()*tot, t=0;
+  for(;t<w.length-1;t++){ r-=w[t]; if(r<=0) break; }
+  const pool=metals.filter(m=>m.tier===TIERS[t]);
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+
+function enterMine(){
+  if(!mineUnlocked){msg("Roll a Legendary or better metal to unlock the mine.",4000);return;}
+  if(typeof THREE==="undefined"){msg("The 3D mine could not load three.js. Check your connection and reload.",5000);return;}
+  mineOn=true;
+  bag=[];
+  grantTickets(3);
+  $("tabMine").classList.add("on");
+  $("tabSurface").classList.remove("on");
+  $("surface").classList.add("hidden");
+  $("mine").classList.remove("hidden");
+  buildMine();
+  mineState.last=performance.now();
+  mineState.raf=requestAnimationFrame(mineLoop);
+  msg("Entered the mine. +3 tickets.",2500);
+  updateUI();
+}
+
+function exitMine(ride){
+  if(!mineOn) return;
+  let note="";
+  if(ride){
+    let kept=0;
+    while(bag.length && inventory.length<MAX_INV){ acquire(bag.shift()); kept++; }
+    note = kept ? `You rode up with ${kept} ore${kept>1?"s":""}.` : "Elevator up. Your bag was empty.";
+    if(bag.length) note+=` ${bag.length} ore(s) didn't fit and were lost.`;
+  } else if(bag.length){
+    note=`You left the mine early. ${bag.length} ore(s) lost.`;
+  }
+  bag=[];
+  destroyMine();
+  mineOn=false;
+  $("mine").classList.add("hidden");
+  $("surface").classList.remove("hidden");
+  $("tabSurface").classList.add("on");
+  $("tabMine").classList.remove("on");
+  render(); updateUI(); renderDiceAndPotions();
+  msg(note||"Back on the surface.",5000);
+}
+
+/* ---- procedural textures ---- */
+function canvasTex(w,h,draw,rx,ry){
+  const c=document.createElement("canvas"); c.width=w; c.height=h;
+  draw(c.getContext("2d"),w,h);
+  const t=new THREE.CanvasTexture(c);
+  t.wrapS=t.wrapT=THREE.RepeatWrapping;
+  t.repeat.set(rx||1,ry||1);
+  return t;
+}
+function rockTex(base,speck){
+  return canvasTex(256,256,(g,w,h)=>{
+    g.fillStyle=base; g.fillRect(0,0,w,h);
+    for(let i=0;i<1600;i++){
+      g.globalAlpha=Math.random()*0.22;
+      g.fillStyle=Math.random()<0.5?"#000":(speck||"#fff");
+      const s=1+Math.random()*4;
+      g.fillRect(Math.random()*w,Math.random()*h,s,s);
+    }
+    g.globalAlpha=0.45; g.strokeStyle="#000";
+    for(let i=0;i<9;i++){
+      g.beginPath(); let x=Math.random()*w,y=Math.random()*h; g.moveTo(x,y);
+      for(let k=0;k<6;k++){x+=rnd(-22,22);y+=rnd(-22,22);g.lineTo(x,y);}
+      g.stroke();
+    }
+    g.globalAlpha=1;
+  },3,6);
+}
+function woodTex(){
+  return canvasTex(128,128,(g,w,h)=>{
+    g.fillStyle="#6b4a2b"; g.fillRect(0,0,w,h);
+    for(let i=0;i<40;i++){
+      g.strokeStyle=Math.random()<0.5?"#4a3118":"#8a6238";
+      g.globalAlpha=0.5; g.lineWidth=1+Math.random()*2;
+      g.beginPath(); g.moveTo(0,Math.random()*h);
+      g.bezierCurveTo(w*0.3,Math.random()*h,w*0.6,Math.random()*h,w,Math.random()*h);
+      g.stroke();
+    }
+    g.globalAlpha=1;
+  },1,1);
+}
+function signTex(level,depthM){
+  return canvasTex(256,128,(g,w,h)=>{
+    g.fillStyle="#8a6238"; g.fillRect(0,0,w,h);
+    g.strokeStyle="#4a3118"; g.lineWidth=6; g.strokeRect(6,6,w-12,h-12);
+    g.fillStyle="#ffd24a"; g.font="bold 40px Arial"; g.textAlign="center";
+    g.fillText(`LEVEL ${level}`,w/2,h*0.5);
+    g.font="bold 24px Arial"; g.fillStyle="#fff1c2";
+    g.fillText(`${depthM} m`,w/2,h*0.82);
+  },1,1);
+}
+function glowTex(){
+  return canvasTex(128,128,(g,w,h)=>{
+    const grd=g.createRadialGradient(w/2,h/2,0,w/2,h/2,w/2);
+    grd.addColorStop(0,"rgba(255,220,150,1)");
+    grd.addColorStop(0.35,"rgba(255,170,80,0.45)");
+    grd.addColorStop(1,"rgba(255,140,40,0)");
+    g.fillStyle=grd; g.fillRect(0,0,w,h);
+  },1,1);
+}
+
+/* ---- scene ---- */
+function buildMine(){
+  const mount=$("mineMount");
+  const W=mount.clientWidth||800, H=mount.clientHeight||460;
+  const renderer=new THREE.WebGLRenderer({antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,IS_TOUCH?1.5:2));
+  renderer.setSize(W,H);
+  mount.insertBefore(renderer.domElement,mount.firstChild);
+
+  const scene=new THREE.Scene();
+  scene.background=new THREE.Color(0x0a0908);
+  scene.fog=new THREE.Fog(0x0a0908,6,38);
+  const camera=new THREE.PerspectiveCamera(70,W/H,0.1,200);
+  scene.add(camera);
+  scene.add(new THREE.HemisphereLight(0xa8b8d8,0x2a1a0a,0.35));
+  const lamp=new THREE.PointLight(0xffe2a8,1.6,14,1.6);
+  camera.add(lamp);
+
+  /* shared materials and geometry */
+  const rockMat=new THREE.MeshStandardMaterial({map:rockTex("#3d3530"),roughness:1});
+  const floorMat=new THREE.MeshStandardMaterial({map:rockTex("#2b2420","#8a6f55"),roughness:1});
+  const woodMat=new THREE.MeshStandardMaterial({map:woodTex(),roughness:0.9});
+  const railMat=new THREE.MeshStandardMaterial({color:0x7a7f88,metalness:0.7,roughness:0.4});
+  const cartMat=new THREE.MeshStandardMaterial({color:0x4b4f57,metalness:0.6,roughness:0.5});
+  const rockGeo=new THREE.ConeGeometry(1,1,6);
+  const pebbleGeo=new THREE.DodecahedronGeometry(0.12,0);
+  const lavaMat=new THREE.MeshBasicMaterial({color:0xff5a1f});
+  const lavaGlowMat=new THREE.MeshBasicMaterial({color:0xff8a2a,transparent:true,opacity:0.3,depthWrite:false});
+  const glowSpriteMat=new THREE.SpriteMaterial({map:glowTex(),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending});
+  const lampMat=new THREE.MeshBasicMaterial({color:0xffd27a});
+  const oreMats={};
+  TIERS.forEach(t=>{
+    oreMats[t]=new THREE.MeshStandardMaterial({color:TIER_COLOR[t],emissive:TIER_COLOR[t],emissiveIntensity:0.15,roughness:0.4});
+  });
+
+  /* floor and ceiling */
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(MINE_W*2,MINE_LEN),floorMat);
+  floor.rotation.x=-Math.PI/2; floor.position.z=MINE_LEN/2;
+  scene.add(floor);
+  const ceil=new THREE.Mesh(new THREE.PlaneGeometry(MINE_W*2,MINE_LEN),rockMat);
+  ceil.rotation.x=Math.PI/2; ceil.position.set(0,8,MINE_LEN/2);
+  scene.add(ceil);
+  for(const x of [-MINE_W-0.5,MINE_W+0.5]){
+    const w=new THREE.Mesh(new THREE.BoxGeometry(1,8,MINE_LEN),rockMat);
+    w.position.set(x,4,MINE_LEN/2);
+    scene.add(w);
+  }
+
+  /* rails and sleepers down the centre lane */
+  for(const x of [-0.7,0.7]){
+    const r=new THREE.Mesh(new THREE.BoxGeometry(0.12,0.12,MINE_LEN),railMat);
+    r.position.set(x,0.06,MINE_LEN/2);
+    scene.add(r);
+  }
+  const sleepers=new THREE.InstancedMesh(new THREE.BoxGeometry(2.2,0.1,0.25),woodMat,Math.floor(MINE_LEN/1.5));
+  const dm=new THREE.Object3D();
+  for(let i=0;i<sleepers.count;i++){
+    dm.position.set(0,0.02,i*1.5+0.5); dm.updateMatrix(); sleepers.setMatrixAt(i,dm.matrix);
+  }
+  scene.add(sleepers);
+
+  /* loose pebbles on the floor (decoration only) */
+  const PEB=IS_TOUCH?300:900;
+  const pebbles=new THREE.InstancedMesh(pebbleGeo,rockMat,PEB);
+  for(let i=0;i<PEB;i++){
+    dm.position.set(rnd(-MINE_W+0.3,MINE_W-0.3),0.05,rnd(0,MINE_LEN));
+    dm.rotation.set(rnd(0,3),rnd(0,3),rnd(0,3));
+    dm.scale.setScalar(rnd(0.5,1.4));
+    dm.updateMatrix(); pebbles.setMatrixAt(i,dm.matrix);
+  }
+  scene.add(pebbles);
+  dm.rotation.set(0,0,0); dm.scale.set(1,1,1);
+
+  /* elevator cage at the entrance */
+  const elev=new THREE.Mesh(new THREE.BoxGeometry(4,0.25,3),new THREE.MeshStandardMaterial({color:0x6a7380,metalness:0.5,roughness:0.6}));
+  elev.position.set(0,0.12,1);
+  scene.add(elev);
+  for(const x of [-2,2]){
+    const post=new THREE.Mesh(new THREE.BoxGeometry(0.1,3.2,0.1),railMat);
+    post.position.set(x,1.6,1.5); scene.add(post);
+  }
+  const cageTop=new THREE.Mesh(new THREE.BoxGeometry(4.1,0.1,3.1),railMat);
+  cageTop.position.set(0,3.2,1); scene.add(cageTop);
+  const elevLight=new THREE.Mesh(new THREE.BoxGeometry(0.2,0.2,0.2),new THREE.MeshBasicMaterial({color:0x66ccff}));
+  elevLight.position.set(-2.2,3.3,1); scene.add(elevLight);
+
+  const state={scene,camera,renderer,lamp,obstacles:[],lava:[],ores:[],veins:[],
+    x:0,z:ENTRY_Z,yaw:0,pitch:-0.05,maxZ:0,raf:0,last:0,dragging:false,lx:0,ly:0,pressE:false,
+    bob:0,moving:false,swing:0,shake:0,debris:[],dust:null,
+    safeX:0,safeZ:ENTRY_Z,safeT:0,
+    mats:{oreMats,lavaMat,lavaGlowMat,rockGeo,rockMat,glowSpriteMat,cartMat,woodMat,railMat},
+    lanternList:s_lanterns.splice(0),lastLevel:0};
+
+  /* pickaxe held in view */
+  const pick=new THREE.Group();
+  const handle=new THREE.Mesh(new THREE.BoxGeometry(0.05,0.5,0.05),woodMat);
+  handle.position.set(0,-0.15,0);
+  const head=new THREE.Mesh(new THREE.BoxGeometry(0.32,0.06,0.07),railMat);
+  head.position.set(0,0.1,0);
+  pick.add(handle,head);
+  pick.position.set(0.34,-0.36,-0.6);
+  pick.rotation.set(0.25,0,-0.2);
+  camera.add(pick);
+  state.pick=pick;
+
+  /* dust motes around the miner */
+  const N=IS_TOUCH?120:300, pos=new Float32Array(N*3), base=[];
+  for(let i=0;i<N;i++) base.push([rnd(-MINE_W,MINE_W),rnd(0,8),rnd(-10,10)]);
+  const dustGeo=new THREE.BufferGeometry();
+  dustGeo.setAttribute("position",new THREE.BufferAttribute(pos,3));
+  const dust=new THREE.Points(dustGeo,new THREE.PointsMaterial({color:0xc8b49a,size:0.05,transparent:true,opacity:0.45,depthWrite:false}));
+  scene.add(dust);
+  state.dust={points:dust,pos,base};
+
+  const el=renderer.domElement;
+  el.addEventListener("pointerdown",e=>{state.dragging=true; state.lx=e.clientX; state.ly=e.clientY;});
+  el.addEventListener("pointermove",e=>{
+    if(!state.dragging) return;
+    state.yaw+=(e.clientX-state.lx)*0.006;
+    state.pitch=Math.max(-1.2,Math.min(1.2,state.pitch-(e.clientY-state.ly)*0.004));
+    state.lx=e.clientX; state.ly=e.clientY;
+  });
+
+  /* lanterns, alternating walls, each with a glow sprite */
+  for(let z=10; z<MINE_LEN; z+=24){
+    const side=(Math.floor(z/24)%2?-1:1);
+    const x=side*(MINE_W-0.1);
+    const bracket=new THREE.Mesh(new THREE.BoxGeometry(0.15,0.15,0.15),lampMat);
+    bracket.position.set(x,3.2,z); scene.add(bracket);
+    const glow=new THREE.Sprite(glowSpriteMat.clone());
+    glow.scale.set(2.2,2.2,1); glow.position.set(x*0.9,3.4,z);
+    scene.add(glow);
+    state.lanternList.push(glow);
+  }
+
+  for(let c=0;c<CHUNKS;c++) buildChunk(state,c);
+  mineState=state;
+}
+
+/* A mine cart on the rails. Its body is a solid obstacle. */
+function buildCart(s,z){
+  const g=new THREE.Group();
+  const body=new THREE.Mesh(new THREE.BoxGeometry(1.1,0.7,1.6),s.mats.cartMat);
+  body.position.set(0,0.55,0);
+  g.add(body);
+  for(let i=0;i<4;i++){
+    const o=new THREE.Mesh(new THREE.DodecahedronGeometry(0.22,0),s.mats.rockMat);
+    o.position.set(rnd(-0.3,0.3),1.0,rnd(-0.5,0.5));
+    o.rotation.set(rnd(0,3),rnd(0,3),0);
+    g.add(o);
+  }
+  g.position.set(0,0,z);
+  s.scene.add(g);
+  s.obstacles.push({x:0,z,r:0.95});
+}
+
+function buildChunk(s,c){
+  const level=c+1, z0=c*CHUNK, M=s.mats;
+  const near=(x,z,r)=>s.obstacles.some(o=>Math.hypot(o.x-x,o.z-z)<o.r+r);
+
+  /* roof supports: timber posts (solid) and a beam, every 12 m */
+  for(let z=z0+3; z<z0+CHUNK; z+=12){
+    if(z<6) continue;
+    for(const x of [-MINE_W+0.2,MINE_W-0.2]){
+      const post=new THREE.Mesh(new THREE.BoxGeometry(0.4,3.4,0.4),M.woodMat);
+      post.position.set(x,1.7,z); s.scene.add(post);
+      s.obstacles.push({x,z,r:0.3});
+    }
+    const beam=new THREE.Mesh(new THREE.BoxGeometry(MINE_W*2,0.4,0.4),M.woodMat);
+    beam.position.set(0,3.5,z); s.scene.add(beam);
+  }
+
+  /* one cart every 40 m, on the rails */
+  if(c%2===1 && z0>=20){
+    const zc=z0+rnd(6,CHUNK-6);
+    buildCart(s,zc);
+  }
+
+  /* lava: only from level 3, never in the centre lane, at least 4 m apart */
+  const nLava=level>=3?Math.min(4,Math.floor((level-2)*0.4)+1):0;
+  let placed=0, tries=0;
+  while(placed<nLava && tries<30){
+    tries++;
+    const side=Math.random()<0.5?-1:1;
+    const x=side*rnd(LANE+1.4,MINE_W-1.6), z=z0+rnd(3,CHUNK-3), r=rnd(0.9,1.5)+level*0.015;
+    if(s.lava.some(p=>Math.hypot(p.x-x,p.z-z)<p.r+r+4)) continue;
+    if(near(x,z,r+0.8)) continue;
+    const pool=new THREE.Mesh(new THREE.CircleGeometry(r,28),M.lavaMat);
+    pool.rotation.x=-Math.PI/2; pool.position.set(x,0.03,z);
+    s.scene.add(pool);
+    const glow=new THREE.Mesh(new THREE.CircleGeometry(r*1.4,28),M.lavaGlowMat);
+    glow.rotation.x=-Math.PI/2; glow.position.set(x,0.02,z);
+    s.scene.add(glow);
+    s.lava.push({x,z,r,pool,glow});
+    placed++;
+  }
+
+  /* rock pillars along the walls and out in the bays (never in the centre lane) */
+  const nRocks=Math.min(12,2+level);
+  for(let i=0;i<nRocks;i++){
+    const side=Math.random()<0.5?-1:1;
+    const x=side*rnd(LANE+0.8,MINE_W-0.5), z=z0+rnd(0,CHUNK), r=rnd(0.4,0.8);
+    if(z<8) continue;
+    if(s.lava.some(p=>Math.hypot(p.x-x,p.z-z)<p.r+r+0.8)) continue;
+    if(near(x,z,r+1.0)) continue;
+    const h=Math.min(4.2,rnd(1.2,2.6)+level*0.04);
+    const cone=new THREE.Mesh(M.rockGeo,M.rockMat);
+    cone.scale.set(r,h,r); cone.position.set(x,h/2,z);
+    s.scene.add(cone);
+    s.obstacles.push({x,z,r:r*0.9});
+  }
+
+  /* stalactites hang from the roof, well above head height (decoration) */
+  const nStal=Math.min(5,1+Math.floor(level/8));
+  for(let i=0;i<nStal;i++){
+    const x=rnd(-5,5), z=z0+rnd(1,CHUNK-1), r=rnd(0.3,0.55), h=rnd(1.2,2.2);
+    if(z<8) continue;
+    const cone=new THREE.Mesh(M.rockGeo,M.rockMat);
+    cone.scale.set(r,h,r); cone.rotation.x=Math.PI; cone.position.set(x,8-h/2,z);
+    s.scene.add(cone);
+  }
+
+  /* ore nodes: same metals and tiers as rolls. Never inside rock, lava or a cart. */
+  for(let i=0;i<3;i++){
+    const side=Math.random()<0.5?-1:1;
+    const x=side*rnd(LANE+0.5,MINE_W-0.8), z=z0+rnd(2,CHUNK-2);
+    if(z<8) continue;
+    if(s.lava.some(p=>Math.hypot(p.x-x,p.z-z)<p.r+0.8)) continue;
+    if(near(x,z,0.9)) continue;
+    const m=pickMineMetal(level);
+    const ti=TIERS.indexOf(m.tier);
+    const g=new THREE.Mesh(new THREE.IcosahedronGeometry(0.32+ti*0.025,0),M.oreMats[m.tier]);
+    g.position.set(x,0.42,z);
+    s.scene.add(g);
+    s.ores.push({x,z,m,ti,mesh:g,alive:true});
+  }
+
+  /* ore veins in the wall faces (visible only, not minable) */
+  for(let i=0;i<2;i++){
+    const side=Math.random()<0.5?-1:1;
+    const z=z0+rnd(1,CHUNK-1), y=rnd(1.2,6);
+    const tIdx=Math.min(8,Math.floor(level/7));
+    const vein=new THREE.Mesh(new THREE.IcosahedronGeometry(0.16,0),M.oreMats[TIERS[tIdx]]);
+    vein.position.set(side*(MINE_W-0.1),y,z);
+    s.scene.add(vein);
+    s.veins.push(vein);
+  }
+
+  /* level sign on the left wall at the start of each level */
+  if(c>0){
+    const sign=new THREE.Mesh(new THREE.PlaneGeometry(2.2,1.1),new THREE.MeshStandardMaterial({map:signTex(level,z0),roughness:0.8}));
+    sign.position.set(-MINE_W+0.05,2.4,z0+1);
+    sign.rotation.y=Math.PI/2;
+    s.scene.add(sign);
+  }
+}
+
+function tryMove(s,dx,dz){
+  const nx=Math.max(-MINE_W+0.6,Math.min(MINE_W-0.6,s.x+dx));
+  const nz=Math.max(0.5,Math.min(MINE_LEN-1,s.z+dz));
+  for(const o of s.obstacles){
+    if(Math.hypot(nx-o.x,nz-o.z)<o.r+0.4) return;
+  }
+  s.x=nx; s.z=nz;
+}
+
+function spawnDebris(s,x,y,z,tier){
+  const col=TIER_COLOR[tier]||0xbfbfbf;
+  const mat=new THREE.MeshBasicMaterial({color:col});
+  for(let i=0;i<10;i++){
+    const d=new THREE.Mesh(new THREE.BoxGeometry(0.07,0.07,0.07),mat);
+    d.position.set(x,y,z);
+    s.scene.add(d);
+    s.debris.push({mesh:d,mat,vx:rnd(-2,2),vy:rnd(1.5,4),vz:rnd(-2,2),life:0.9});
+  }
+}
+
+/* Lava: with Fireward you return to your last safe spot and keep your bag.
+   Without it the bag burns and you go back to the elevator. */
+function burn(s,ward){
+  if(ward){
+    s.x=s.safeX; s.z=s.safeZ;
+    msg("Lava! Fireward kept your bag safe. Back to safe ground.",3500);
+  } else {
+    bag=[];
+    s.x=0; s.z=ENTRY_Z;
+    s.safeX=0; s.safeZ=ENTRY_Z;
+    msg("You stepped in lava! Your bag burned up.",4000);
+  }
+  s.shake=0.4;
+}
+
+function update(s,dt,now){
+  const swift=active("swift"), eye=active("eye"), ward=active("ward");
+
+  const turn=(keys.ArrowRight?1:0)-(keys.ArrowLeft?1:0);
+  s.yaw+=turn*dt*2.2;
+  const look=(keys.ArrowUp?1:0)-(keys.ArrowDown?1:0);
+  s.pitch=Math.max(-1.2,Math.min(1.2,s.pitch+look*dt*1.5));
+
+  const fwd=Math.max(-1,Math.min(1,(keys.KeyW?1:0)-(keys.KeyS?1:0)+touchIn.f));
+  const str=Math.max(-1,Math.min(1,(keys.KeyD?1:0)-(keys.KeyA?1:0)+touchIn.s));
+  s.moving=!!(fwd||str);
+  if(s.moving){
+    const fx=Math.sin(s.yaw), fz=Math.cos(s.yaw);
+    const rx=-Math.cos(s.yaw), rz=Math.sin(s.yaw);
+    let dx=fx*fwd+rx*str, dz=fz*fwd+rz*str;
+    const len=Math.hypot(dx,dz)||1; dx/=len; dz/=len;
+    const sp=5*(swift?1.6:1)*dt;
+    tryMove(s,dx*sp,0);
+    tryMove(s,0,dz*sp);
+    s.bob+=dt*(swift?12:9);
+  }
+
+  /* lava check, and tracking of the last safe spot */
+  let inLava=false, nearLava=false;
+  for(const p of s.lava){
+    const d=Math.hypot(s.x-p.x,s.z-p.z);
+    if(d<p.r){ inLava=true; break; }
+    if(d<p.r+1.5) nearLava=true;
+  }
+  if(inLava){ burn(s,ward); }
+  else {
+    s.safeT-=dt;
+    if(s.safeT<=0 && !nearLava){
+      s.safeX=s.x; s.safeZ=s.z; s.safeT=0.5;
+    }
+  }
+
+  let near=null, nd=eye?5:2.2;
+  for(const o of s.ores){
+    if(!o.alive) continue;
+    const d=Math.hypot(o.x-s.x,o.z-s.z);
+    if(d<nd){nd=d; near=o;}
+  }
+  const nearElev=s.z<3.5 && Math.abs(s.x)<2.5;
+
+  if(s.pressE){
+    s.pressE=false;
+    if(near){
+      if(bag.length>=MAX_BAG){
+        msg("Your bag is full (25/25). Ride the elevator up to empty it.",3000);
+      } else {
+        bag.push(near.m);
+        near.alive=false;
+        s.scene.remove(near.mesh);
+        spawnDebris(s,near.x,0.5,near.z,near.m.tier);
+        s.swing=1;
+        s.shake=0.12;
+        grantTickets(1);
+        if(IS_TOUCH&&navigator.vibrate) navigator.vibrate(12);
+        msg(`Mined ${near.m.name}! +1 ticket`,1600);
+      }
+    } else if(nearElev){
+      exitMine(true);
+      return;
+    }
+  }
+  if(s.swing>0) s.swing=Math.max(0,s.swing-dt*3.5);
+  s.pick.rotation.x=0.25-Math.sin(s.swing*Math.PI)*1.3;
+
+  let hint="";
+  if(near) hint=`Press E to mine ${near.m.name} (${cap(near.m.tier)})`;
+  else if(nearElev) hint="Press E to ride the elevator up";
+  const hEl=$("mineHint");
+  hEl.innerHTML=hint?"<span></span>":"";
+  if(hint) hEl.firstChild.textContent=hint;
+  const act=$("mineAction");
+  act.classList.toggle("ready",!!hint);
+  act.textContent=near?"Mine":(nearElev?"Ride up":"Mine");
+
+  /* living scene */
+  const pulse=0.5+0.5*Math.sin(now/260);
+  for(const o of s.ores){ if(o.alive) o.mesh.rotation.y+=dt*0.8; }
+  for(const t of TIERS){
+    const idx=TIERS.indexOf(t);
+    s.mats.oreMats[t].emissiveIntensity=(idx>=5?0.5+0.4*pulse:0.15)+(eye?0.25:0);
+  }
+  for(const p of s.lava){
+    p.pool.material.color.setHSL(0.05,1,0.42+0.08*Math.sin(now/400+p.x));
+  }
+  for(const g of s.lanternList){
+    g.material.opacity=0.8+0.2*Math.sin(now/90+g.position.z);
+  }
+  for(let i=s.debris.length-1;i>=0;i--){
+    const d=s.debris[i];
+    d.life-=dt;
+    d.vy-=9.8*dt;
+    d.mesh.position.x+=d.vx*dt; d.mesh.position.y+=d.vy*dt; d.mesh.position.z+=d.vz*dt;
+    if(d.mesh.position.y<0.03){ d.mesh.position.y=0.03; d.vy=0; d.vx*=0.7; d.vz*=0.7; }
+    if(d.life<=0){ s.scene.remove(d.mesh); d.mat.dispose(); s.debris.splice(i,1); }
+  }
+  const dp=s.dust.pos;
+  for(let i=0;i<s.dust.base.length;i++){
+    const b=s.dust.base[i];
+    b[1]-=dt*0.15;
+    if(b[1]<0) b[1]+=8;
+    dp[i*3]=s.x+b[0]*0.9; dp[i*3+1]=b[1]; dp[i*3+2]=s.z+b[2];
+  }
+  s.dust.points.geometry.attributes.position.needsUpdate=true;
+
+  /* deeper means darker, with tighter fog */
+  const level=Math.min(CHUNKS,Math.floor(s.z/CHUNK)+1);
+  if(level!==s.lastLevel){
+    s.lastLevel=level;
+    s.scene.fog.far=Math.max(18,38-level*0.3);
+    s.scene.fog.color.setHex(level>=9?0x060506:0x0a0908);
+  }
+
+  /* camera: bob while walking, shake after mining or lava */
+  const bobY=s.moving?Math.sin(s.bob)*0.035:0;
+  const shake=s.shake>0?(Math.random()-0.5)*0.12*s.shake:0;
+  s.shake=Math.max(0,s.shake-dt);
+  s.camera.position.set(s.x+shake,1.6+bobY,s.z);
+  s.camera.lookAt(
+    s.x+Math.sin(s.yaw)*Math.cos(s.pitch),
+    1.6+Math.sin(s.pitch),
+    s.z+Math.cos(s.yaw)*Math.cos(s.pitch)
+  );
+
+  /* HUD and depth gauge */
+  const depth=Math.max(0,Math.floor(s.z));
+  s.maxZ=Math.max(s.maxZ,depth);
+  $("mineHud").innerHTML=`Depth <b>${depth} m</b> · Level <b>${level}</b><br>Bag ${bag.length}/${MAX_BAG} · Deepest ${s.maxZ} m · Tickets ${tickets}`;
+  $("gaugeFill").style.height=(Math.min(1,s.z/MINE_LEN)*100)+"%";
+}
+
+function mineLoop(now){
+  const s=mineState;
+  if(!s||!mineOn) return;
+  const dt=Math.min(0.05,(now-s.last)/1000);
+  s.last=now;
+  update(s,dt,now);
+  if(!mineOn||!mineState) return;
+  s.renderer.render(s.scene,s.camera);
+  s.raf=requestAnimationFrame(mineLoop);
+}
+
+function destroyMine(){
+  const s=mineState;
+  if(!s) return;
+  cancelAnimationFrame(s.raf);
+  s.scene.traverse(o=>{
+    if(o.geometry) o.geometry.dispose();
+    if(o.material){
+      if(Array.isArray(o.material)) o.material.forEach(m=>m.dispose());
+      else o.material.dispose();
+    }
+    if(o.material && o.material.map) o.material.map.dispose();
+  });
+  s.renderer.dispose();
+  if(s.renderer.forceContextLoss) s.renderer.forceContextLoss();
+  s.renderer.domElement.remove();
+  mineState=null;
+  for(const k in keys) delete keys[k];
+}
+
+function keyEvt(e,down){
+  if(!mineOn) return;
+  if(/^(Arrow|Space)/.test(e.code)) e.preventDefault();
+  keys[e.code]=down;
+  if(down && e.code==="KeyE" && !e.repeat && mineState) mineState.pressE=true;
+}
+window.addEventListener("keydown",e=>keyEvt(e,true));
+window.addEventListener("keyup",e=>keyEvt(e,false));
+window.addEventListener("blur",()=>{for(const k in keys) delete keys[k];});
+window.addEventListener("pointerup",()=>{if(mineState) mineState.dragging=false;});
+window.addEventListener("resize",()=>{
+  if(!mineState) return;
+  const W=$("mineMount").clientWidth||800;
+  const H=$("mineMount").clientHeight||460;
+  mineState.renderer.setSize(W,H);
+  mineState.camera.aspect=W/H;
+  mineState.camera.updateProjectionMatrix();
+});
+
+/* ================= START ================= */
+$("tabSurface").onclick=()=>{ if(mineOn) exitMine(false); };
+$("tabMine").onclick=()=>{
+  if(mineOn) return;
+  if(!mineUnlocked){ msg("Roll a Legendary or better metal to unlock the mine.",4000); return; }
+  enterMine();
+};
+$("rollBtn").onclick=rollMetal;
+$("saveBtn").onclick=()=>saveGame(false);
+$("clearBtn").onclick=clearGame;
+$("redeemBtn").onclick=redeemCode;
+$("codeInput").addEventListener("keydown",e=>{ if(e.key==="Enter") redeemCode(); });
+$("shopDiceTab").onclick=()=>{ shopView="dice"; renderShop(); };
+$("shopPotTab").onclick=()=>{ shopView="potions"; renderShop(); };
+$("potToggle").onclick=()=>{ potionsOpen=!potionsOpen; renderShop(); };
+document.querySelectorAll(".qty [data-q]").forEach(b=>{
+  b.onclick=()=>{ qty=Number(b.dataset.q); renderShop(); };
+});
+
+loadGame();
+recalcIncome();
+render();
+updateUI();
+updateTabs();
+renderDiceAndPotions();
+
+/* once per second: income (with Coin doubling), ticket refill, displays */
 setInterval(()=>{
-  money += incomePerSecond
-  updateUI()
-},1000)
+  money+=incomePerSecond*incomeMult();
+  tickTickets();
+  updateUI();
+  if(!mineOn) updateDiceUI_light();
+},1000);
 
-updateUI()
-updateDiceUI()
-render()
+/* autosave every 15 seconds while on the surface */
+setInterval(()=>{ if(!mineOn) saveGame(true); },15000);
 
+function updateDiceUI_light(){
+  /* keeps the buff text and potion counts fresh without rebuilding shop cards */
+  const pv=$("potionInventory");
+  if(pv && pv.children.length!==POTIONS.length) renderDiceAndPotions();
+}
 </script>
 
-</body>
-</html>
+</body></html>
